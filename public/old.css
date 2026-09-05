@@ -40,6 +40,11 @@
   letter-spacing:.05em; text-transform:uppercase;
 }
 .old__hlavicka a:hover{text-decoration:underline}
+.old__navrat{
+  margin-left:auto; padding:8px 16px; border:2px solid #fff; border-radius:999px;
+  text-transform:none !important; letter-spacing:0 !important; font-weight:700;
+}
+.old__navrat:hover{background:#fff; color:#dca47d; text-decoration:none !important}
 
 /* ---- HERO ---- */
 .old__hero{
