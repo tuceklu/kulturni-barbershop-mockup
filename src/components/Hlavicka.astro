@@ -7,6 +7,10 @@ const {
   // na cestu té stránky, ať odkaz roluje na místě a neodvádí jinam.
   zaklad = base,
 } = Astro.props;
+
+const jeTmava = Astro.url.pathname.includes('/tmava');
+const prepinacHref = jeTmava ? base : `${base}tmava/`;
+const prepinacText = jeTmava ? 'Světlá' : 'Tmavá';
 ---
 <header class="hlavicka">
   <div class="hlavicka__obal">
@@ -23,7 +27,7 @@ const {
         <li><a href={`${zaklad}#klub`}>Klub gentlemanů</a></li>
         <li><a href={`${zaklad}#kontakt`}>Kontakt</a></li>
         <li><a href={poukazyUrl}>Poukazy</a></li>
-        <li><a href={`${base}tmava/`}>Tmavá</a></li>
+        <li><a href={prepinacHref}>{prepinacText}</a></li>
         <li><a class="menu__vyzva" href={`${zaklad}#objednat`}>Objednat termín</a></li>
       </ul>
     </nav>
