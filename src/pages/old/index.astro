@@ -1,0 +1,175 @@
+---
+// Snímek toho, jak dnes (5. 9. 2026) vypadá homepage na
+// kulturnibarbershop.cz — pro srovnání vedle nové verze a "tmavé"
+// varianty. Texty a obrázky jsou z živého webu, soubory vzaté
+// z lokální zálohy na disku (Zaloha/FTP), font a jeden pozměněný
+// obrázek (Břitva…) doplněny přímým stažením z živého webu.
+const base = import.meta.env.BASE_URL;
+---
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kulturní Barbershop - Vybrané služby pro moderního muže (dnešní ostrý web)</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href={`${base}old.css`}>
+</head>
+<body class="old">
+  <p style="background:#1a1613;color:#f2ece6;text-align:center;font-size:14px;padding:8px 16px;margin:0">
+    <strong>Snímek ostrého webu.</strong> Takhle vypadá homepage na kulturnibarbershop.cz dnes — pro srovnání.
+    <a href={base} style="color:#dca47d">← Zpět na nový návrh</a>
+  </p>
+
+  <header class="old__hlavicka">
+    <div class="old__obal">
+      <a href="#sluzby">Naše služby</a>
+      <a href="#clenstvi">Klub gentlemanů</a>
+      <a href="#rezervace">Objednejte se</a>
+      <a href="#kontakt">Kontakt</a>
+    </div>
+  </header>
+
+  <section class="old__hero">
+    <img class="old__hero-foto" src={`${base}old/obrazky/hero.jpg`} alt="">
+    <div class="old__hero-obsah">
+      <h1>Kulturní Barbershop</h1>
+      <p>Vybrané služby pro pány, kteří potřebují zkulturnit</p>
+      <a class="tlac" href="#sluzby">Víc o nás</a>
+    </div>
+  </section>
+
+  <section class="old__sekce old__sekce--tmava" id="sluzby">
+    <div class="old__obal">
+      <h2 class="old--stred">co nabízíme</h2>
+      <p class="old--stred" style="max-width:640px;margin-inline:auto">
+        Jsme profesionálové se zaměřením na pánský vzhled. V našem barbershopu se uvolníte,
+        nebudete myslet na práci ani starosti doma, v klidu si užijete dobré pití v příjemné
+        společnosti, ale hlavně vás zkulturníme do podoby pravých gentlemanů.
+      </p>
+
+      <div class="old__sluzby">
+        <div class="old__sluzba">
+          <img src={`${base}old/obrazky/vlasy22.png`} alt="">
+          <h3>kulturní střih</h3>
+          <p>45 minut</p>
+          <p>Komplet ostříhání, abyste vypadal k světu. V ceně je umytí, střih strojkem
+            i nůžkami, úprava kontur a styling.</p>
+          <p class="cena">490*/540 Kč</p>
+        </div>
+        <div class="old__sluzba">
+          <img src={`${base}old/obrazky/vousy22.png`} alt="">
+          <h3>kulturní oholení</h3>
+          <p>45 minut</p>
+          <p>Oholení dohladka s napařením nebo úprava vousů. Břitva je vždy dobře
+            nabroušená, přijďte klidně v bílé košili.</p>
+          <p class="cena">490*/540 Kč</p>
+        </div>
+        <div class="old__sluzba">
+          <img src={`${base}old/obrazky/face222.png`} alt="">
+          <h3>komplet zkulturnění</h3>
+          <p>90 minut</p>
+          <p>Kombinace střihu a holení. Maximální služba pro všechny gentlemany,
+            kteří dbají o svůj vzhled.</p>
+          <p class="cena">830*/890 Kč</p>
+        </div>
+      </div>
+
+      <p class="old__poznamka">
+        Dárkové poukazy na jednotlivé služby k dostání přímo v barbershopu.<br>
+        * Platí pro stálé zákazníky a všechny členy klubu kulturních gentlemanů.
+      </p>
+    </div>
+  </section>
+
+  <section class="old__sekce" id="clenstvi">
+    <div class="old__obal old__dvojice">
+      <div>
+        <h2>členství pro stálé zákazníky</h2>
+        <p>Jsme zastánci toho, že pánové by se o sebe měli starat pravidelně a dlouhodobě.
+          Velmi nám záleží na tom, aby byli naši zákazníci maximálně spokojení, jejich vzhled
+          je také naší vizitkou. Z tohoto důvodu se každý pán, který využije našich služeb
+          alespoň pětkrát, stává automaticky členem klubu kulturních gentlemanů a platí pro
+          něj ceny pro stálé zákazníky.</p>
+        <a class="tlac" href="#rezervace">Chci být členem</a>
+      </div>
+      <div class="old__obrazek">
+        <img src={`${base}old/obrazky/britva.jpg`} alt="Břitva na holení Kulturního Barbershopu">
+      </div>
+    </div>
+  </section>
+
+  <section class="old__sekce old__napoje">
+    <div class="old__obal old--stred">
+      <h2>co u nás ochutnáte</h2>
+      <p style="max-width:640px;margin-inline:auto">
+        V ceně každé naší služby je samozřejmě i nápoj. Pochutnat si můžete na kvalitní kávě,
+        v nabídce máme také několik nealkoholických nápojů. Pivo vedeme v alkoholické
+        i nealkoholické podobě, kromě toho si u nás přijdou na chuť všichni labužníci a znalci
+        kvalitního pití. Pokud si nejste jisti výběrem, rádi vám něco doporučíme.
+      </p>
+      <p>Pravidelně obměňujeme nabídku v podobě:</p>
+      <ul style="margin-inline:auto; text-align:left; display:inline-block">
+        <li>whiskey</li><li>rumů</li><li>ginů</li><li>bourbonů</li><li>vodky</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="old__sekce old__sekce--tmava" id="rezervace">
+    <div class="old__obal old--stred">
+      <img src={`${base}old/obrazky/logo.png`} alt="" style="width:70px; margin:0 auto 24px">
+      <h2>objednejte se</h2>
+      <div class="old__rezervace-nahled">
+        <p style="margin:0 0 14px; font-size:14px; color:#999">Prosím zvolte vyberte službu:</p>
+        <select disabled><option>Vyberte službu:</option></select>
+        <select disabled><option>Barber (ponechte prázdné pro všechny volné termíny):</option></select>
+        <span class="tlac" aria-disabled="true">Pokračovat</span>
+        <p style="margin:20px 0 10px; font-size:14px; color:#999">Vyberte datum a čas:</p>
+        <p class="old__kalendar-nazev">září 2026</p>
+        <div class="old__kalendar-mrizka">
+          <div class="den">P</div><div class="den">Ú</div><div class="den">S</div>
+          <div class="den">Č</div><div class="den">P</div><div class="den">S</div><div class="den">N</div>
+          <div class="den den--jiny">31</div>
+          {Array.from({ length: 30 }, (_, i) => <div class="den">{i + 1}</div>)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="old__sekce old__sekce--tmava">
+    <div class="old__obal old__dvojice">
+      <div class="old__obrazek">
+        <img src={`${base}old/obrazky/lukas.jpg`} alt="Lukáš z Kulturního Barbershopu">
+      </div>
+      <div>
+        <h2>kdo se o vás postará</h2>
+        <p>Náš tým je stálý a málokdy k sobě někoho pouštíme. Kvalita služeb a dlouhodobá
+          spokojenost našich klientů je pro nás to nejdůležitější, proto se u nás nestane,
+          že by vás stříhal student, nebo někdo, kdo se teprve zaučuje.</p>
+        <h3 style="margin-top:1.4em">lukáš</h3>
+        <p>Lukáš je přední odborník na zkulturnění, taky už má něco nastříháno…</p>
+        <p>Plánujete pracovní schůzku? Jdete na rande? Nebo to nejlepší, chcete prostě
+          stále vypadat dobře? Objednejte se k Lukášovi, který má nůžky vždy po ruce
+          a břitvu perfektně nabroušenou.</p>
+        <a class="tlac" href="#rezervace">objednat k lukášovi</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="old__sekce old__kontakt" id="kontakt">
+    <div class="old__obal">
+      <h2>stavte se u nás</h2>
+      <p>od pondělí do pátku<br><strong>08:00 – 19:30</strong></p>
+      <div class="old__dvojice" style="margin-top:40px">
+        <div class="udaj"><strong>Na telefonu</strong><a href="tel:+420704364162">+420 704 364 162</a></div>
+        <div class="udaj"><strong>Na mailu</strong><a href="mailto:info@kulturnibarbershop.cz">info@kulturnibarbershop.cz</a></div>
+        <div class="udaj"><strong>Na adrese</strong>Zámecká 85, Kolín</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="old__paticka">
+    Kulturní Barbershop — snímek z 5. 9. 2026, jen pro srovnání barev.
+  </footer>
+</body>
+</html>

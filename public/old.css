@@ -1,0 +1,101 @@
+/* "old" — snímek aktuálního ostrého webu (Divi), pro srovnání.
+   Samostatný, nezávislý na style.css nové verze. Barvy a fonty
+   změřené přímo na kulturnibarbershop.cz 5. 9. 2026. */
+
+@font-face{
+  font-family:'Nunito'; font-style:normal; font-weight:400 900; font-display:swap;
+  src:url(pisma/nunito-latin.woff2) format('woff2-variations');
+}
+@font-face{
+  font-family:'BARBER'; font-display:swap;
+  src:url(pisma/barbaro.ttf) format('truetype');
+}
+
+.old{
+  margin:0; background:#fff; color:#666;
+  font-family:'Nunito', -apple-system, 'Segoe UI', Arial, sans-serif;
+  font-size:16px; line-height:1.7;
+}
+.old *{box-sizing:border-box}
+.old img{max-width:100%; height:auto; display:block}
+.old h1,.old h2,.old h3{
+  font-family:'BARBER', 'Oswald', Arial, sans-serif; font-weight:400;
+  text-transform:lowercase; letter-spacing:.03em; margin:0 0 .5em;
+}
+.old a{color:inherit}
+
+.old__obal{max-width:1080px; margin-inline:auto; padding-inline:24px}
+.old__sekce{padding-block:70px}
+.old__sekce--tmava{background:#000; color:#ccc}
+.old__sekce--tmava h1,.old__sekce--tmava h2,.old__sekce--tmava h3{color:#fff}
+
+/* ---- HLAVIČKA — plná měděná barva, žádná bílá ani blur ---- */
+.old__hlavicka{background:#dca47d; position:sticky; top:0; z-index:10}
+.old__hlavicka .old__obal{
+  display:flex; align-items:center; justify-content:flex-end; gap:28px;
+  min-height:60px; flex-wrap:wrap; padding-block:10px;
+}
+.old__hlavicka a{
+  color:#fff; text-decoration:none; font-weight:700; font-size:14px;
+  letter-spacing:.05em; text-transform:uppercase;
+}
+.old__hlavicka a:hover{text-decoration:underline}
+
+/* ---- HERO ---- */
+.old__hero{
+  position:relative; min-height:520px; display:flex; align-items:center;
+  justify-content:center; text-align:center; color:#fff; background:#000;
+}
+.old__hero-foto{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.55}
+.old__hero-obsah{position:relative; z-index:1; padding:24px}
+.old__hero h1{font-size:clamp(34px,6vw,58px); margin-bottom:.3em}
+.old__hero p{font-size:18px; margin-bottom:1.6em; color:#e8e8e8}
+
+/* ---- TLAČÍTKO — Diviho typický tlustý bílý rámeček ---- */
+.old .tlac{
+  display:inline-block; background:#fff; color:#1d2528; text-decoration:none;
+  font-weight:700; font-size:14px; letter-spacing:.05em; text-transform:uppercase;
+  padding:14px 26px; border:10px solid #fff; border-radius:0;
+}
+
+/* ---- SLUŽBY ---- */
+.old__sluzby{display:grid; gap:36px; grid-template-columns:1fr; margin-top:40px; text-align:center}
+@media (min-width:760px){ .old__sluzby{grid-template-columns:repeat(3,1fr)} }
+.old__sluzba img{width:64px; height:64px; margin:0 auto 18px; object-fit:contain}
+.old__sluzba h3{font-size:22px; color:#fff}
+.old__sluzba p{color:#aaa; font-size:15px}
+.old__sluzba .cena{color:#dca47d; font-weight:700; font-size:18px; margin-top:10px}
+.old__poznamka{margin-top:40px; text-align:center; font-size:14px; color:#999}
+
+/* ---- DVOUSLOUPEC (členství, Lukáš) ---- */
+.old__dvojice{display:grid; gap:40px; grid-template-columns:1fr; align-items:center}
+@media (min-width:760px){ .old__dvojice{grid-template-columns:1fr 1fr} }
+.old__dvojice img{border-radius:0}
+.old__dvojice--obraz-vlevo .old__obrazek{order:-1}
+.old--stred{text-align:center}
+
+/* ---- NÁPOJE ---- */
+.old__napoje ul{columns:2; list-style:none; padding:0; margin:16px 0; max-width:320px}
+.old__napoje li{margin-bottom:6px}
+
+/* ---- REZERVACE (jen náhled, needitovatelné) ---- */
+.old__rezervace-nahled{
+  background:#111; border:1px solid #2a2a2a; padding:28px; max-width:520px; margin-inline:auto;
+}
+.old__rezervace-nahled select,
+.old__rezervace-nahled .tlac{width:100%; margin-bottom:16px}
+.old__rezervace-nahled select{
+  padding:12px; font:inherit; background:#000; color:#ccc; border:1px solid #444;
+}
+.old__kalendar-mrizka{display:grid; grid-template-columns:repeat(7,1fr); gap:4px; font-size:13px; text-align:center; color:#999}
+.old__kalendar-mrizka .den{padding:8px 0}
+.old__kalendar-mrizka .den--jiny{color:#444}
+.old__kalendar-nazev{font-weight:700; color:#dca47d}
+
+/* ---- KONTAKT / PATIČKA ---- */
+.old__kontakt{text-align:center}
+.old__kontakt .old__dvojice{grid-template-columns:1fr; text-align:center}
+@media (min-width:760px){ .old__kontakt .old__dvojice{grid-template-columns:repeat(3,1fr)} }
+.old__kontakt .udaj{margin-bottom:24px}
+.old__kontakt .udaj strong{display:block; color:#dca47d; font-size:13px; letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px}
+.old__paticka{background:#f7f7f7; color:#888; text-align:center; font-size:13px; padding:24px}
