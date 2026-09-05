@@ -13,18 +13,8 @@ body.tmava{
   --med-tmava:   #c68a5c;
 }
 
-body.tmava .hlavicka{
-  background:var(--med-svetla);
-  border-bottom-color:transparent;
-}
-body.tmava .znacka,
-body.tmava .menu a,
-body.tmava .znacka__text{ color:#fff; }
-body.tmava .menu a.menu__vyzva{ background:#1a1613; }
-body.tmava .menu-prepinac{ border-color:rgba(255,255,255,.6); color:#fff; }
-/* Aktivní položka menu ("Tmavá") by jinak zdědila --med-text, což je na
-   tomhle pásu ta samá barva jako pozadí hlavičky — text by zmizel. */
-body.tmava .menu a[aria-current="page"]{ color:#fff; border-bottom-color:#1a1613; }
+/* Hlavička (menu) zůstává na každé stránce stejná — světlá — aby bylo
+   menu napříč verzemi vizuálně jednotné. Přebarvuje se jen obsah pod ní. */
 
 body.tmava .sluzba__volba:hover{ background:#1c1815; }
 body.tmava .souhrn{ background:rgba(0,0,0,.92); }
