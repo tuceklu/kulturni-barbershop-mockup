@@ -1,0 +1,58 @@
+---
+// Vzhled souhlasové lišty z nové verze webu (REKLAMA.md). V tomhle
+// mockupu nic neukládá a nic nikam neposílá — tlačítka lištu jen
+// schovají. Skutečná lišta na živém webu dnes neběží, protože ID
+// pixelu je prázdné (viz STAV.md).
+---
+<div class="souhlas" id="kb-souhlas" hidden>
+  <div class="souhlas__obal">
+    <p class="souhlas__text">
+      Chceme vědět, jestli má naše reklama smysl. Uložili bychom si kvůli tomu
+      do vašeho prohlížeče cookie od Mety (Facebook). Bez svolení to neuděláme,
+      web funguje stejně.
+      <button type="button" class="souhlas__vic" id="kb-souhlas-vic" aria-expanded="false">Co přesně se ukládá</button>
+    </p>
+    <div class="souhlas__tlacitka">
+      <button type="button" class="tlacitko tlacitko--obrys-tmavy" id="kb-souhlas-odmitnout">Odmítnout</button>
+      <button type="button" class="tlacitko" id="kb-souhlas-prijmout">Přijmout</button>
+    </div>
+    <div class="souhlas__podrobnosti" id="kb-souhlas-podrobnosti" hidden>
+      <p>V ukázce se nic neukládá ani neodesílá — tabulka jen ukazuje, jak by
+        vypadaly podrobnosti na skutečném webu.</p>
+      <table>
+        <thead><tr><th>Co</th><th>Proč</th><th>Jak dlouho</th></tr></thead>
+        <tbody>
+          <tr><td>Cookie Mety (_fbp)</td><td>měření účinnosti reklamy</td><td>90 dní</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var lista = document.getElementById('kb-souhlas');
+  var otevriraci = document.querySelectorAll('[data-souhlas-otevrit]');
+  var vic = document.getElementById('kb-souhlas-vic');
+  var podrobnosti = document.getElementById('kb-souhlas-podrobnosti');
+  var odmitnout = document.getElementById('kb-souhlas-odmitnout');
+  var prijmout = document.getElementById('kb-souhlas-prijmout');
+  if (!lista) return;
+
+  // V ukázce se lišta ukáže vždycky po načtení — na živém webu si
+  // pamatuje předchozí rozhodnutí, tady nic neukládáme.
+  requestAnimationFrame(function () { lista.hidden = false; });
+
+  function skryj() { lista.hidden = true; }
+  odmitnout && odmitnout.addEventListener('click', skryj);
+  prijmout && prijmout.addEventListener('click', skryj);
+  otevriraci.forEach(function (t) {
+    t.addEventListener('click', function () { lista.hidden = false; });
+  });
+  vic && vic.addEventListener('click', function () {
+    var otevreno = vic.getAttribute('aria-expanded') === 'true';
+    vic.setAttribute('aria-expanded', String(!otevreno));
+    podrobnosti.hidden = otevreno;
+  });
+})();
+</script>

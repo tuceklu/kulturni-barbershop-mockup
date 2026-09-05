@@ -1,0 +1,39 @@
+---
+import Hlavicka from '../components/Hlavicka.astro';
+import Paticka from '../components/Paticka.astro';
+import Souhlas from '../components/Souhlas.astro';
+
+const base = import.meta.env.BASE_URL;
+const {
+  title,
+  description = 'Ukázka designu webu Kulturní Barbershop — statický mockup, žádná data ani rezervace nejsou skutečné.',
+  jeUvodni = false,
+  poukazyUrl,
+} = Astro.props;
+---
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href={`${base}style.css`}>
+  <link rel="stylesheet" href={`${base}poukazy.css`}>
+  <link rel="stylesheet" href={`${base}mockup.css`}>
+  <link rel="icon" href={`${base}favicon-32x32.png`} sizes="32x32">
+  <link rel="icon" href={`${base}favicon-192x192.png`} sizes="192x192">
+  <link rel="apple-touch-icon" href={`${base}apple-touch-icon.png`}>
+</head>
+<body>
+  <p class="demo-pasek">
+    <strong>Ukázka designu.</strong> Statický mockup bez databáze a bez skutečné rezervace — nic tu neodešlete.
+  </p>
+  <a class="ctecka" href="#obsah">Přeskočit na obsah</a>
+  <Hlavicka poukazyUrl={poukazyUrl} />
+  <slot />
+  <Paticka jeUvodni={jeUvodni} />
+  <Souhlas />
+</body>
+</html>

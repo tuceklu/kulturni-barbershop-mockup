@@ -1,0 +1,926 @@
+/*
+Theme Name: Kulturní Barbershop
+Description: Vlastní tenká šablona pro Kulturní Barbershop. Bez builderu, bez závislostí, písma z vlastního serveru.
+Author: Kulturní Barbershop
+Version: 1.6.0
+Requires at least: 6.5
+Requires PHP: 8.1
+Text Domain: kulturni
+*/
+
+/* ==== PISMA, vlastni server, zadne volani na Google ==================== */
+@font-face{font-family:'Oswald';font-style:normal;font-weight:200 700;font-display:swap;src:url(pisma/oswald-latin-ext.woff2) format('woff2-variations');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Oswald';font-style:normal;font-weight:200 700;font-display:swap;src:url(pisma/oswald-latin.woff2) format('woff2-variations');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Nunito';font-style:normal;font-weight:200 1000;font-display:swap;src:url(pisma/nunito-latin-ext.woff2) format('woff2-variations');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Nunito';font-style:normal;font-weight:200 1000;font-display:swap;src:url(pisma/nunito-latin.woff2) format('woff2-variations');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+
+/* ==== TOKENY. Hodnoty se meni TADY, nikde jinde. ======================= */
+:root{
+  --med:        #db8e57;   /* akcent prevzaty z puvodniho webu. JEN ozdoba:
+                              linky, ramecky, znacka na mape. Na text ne. */
+  --med-text:   #9b643d;   /* med pro TEXT a tlacitka. Zmereno proti obema
+                              podkladum, ktere web pouziva: 4,90:1 na bile,
+                              4,59:1 na teplem papiru, 4,90:1 pod bilym
+                              textem. Prochazi WCAG AA vsude. */
+  --med-tmava:  #8a5836;   /* tmavsi odstin pri najeti */
+  --med-svetla: #dca47d;   /* jen na tmavem pasu, tam ma 6,61:1 */
+  --inkoust:    #354052;   /* bezny text */
+  --tma:        #1a2c37;   /* tmavy pas */
+  --papir:      #ffffff;
+  --papir-tepl: #faf7f4;   /* jemne teply podklad sekce */
+  --linka:      #e4ddd6;   /* JEN ozdoba a předěly. Na hranici ovládacího
+                              prvku ne: proti bílé má 1,35:1. */
+  /* Hranice OVLÁDACÍCH prvků — štítky holičů, tlačítko s obrysem.
+     WCAG 2.2 SC 1.4.11 žádá 3:1 a `--linka` na to nestačí ani omylem.
+     Změřeno: 3,39:1 na bílé, 3,17:1 na teplém papíru. */
+  --linka-ovladaci: #ab8460;
+
+  --pismo-nadpis: 'Oswald', 'Helvetica Neue', Arial, sans-serif;
+  --pismo-text:   'Nunito', -apple-system, 'Segoe UI', Arial, sans-serif;
+
+  /* Prstenec focusu. Jedna barva to neumí: ani jedna z barev webu nemá
+     3:1 proti bílé, teplému papíru, tmavému pásu i mědenému tlačítku
+     zároveň (změřeno, WCAG 2.2 SC 1.4.11). Proto dva prstence — tmavý
+     nese světlé podklady, světlá mezera pod ním nese tmavé.
+       tmavý na bílé 14,39:1 · na teplém 13,48:1
+       bílá na tmavém pásu 14,39:1 · na mědi 4,90:1
+     Dřív tu byla --med (#db8e57) samotná: 2,62:1 na bílé. Neprocházelo. */
+  --fokus:      #1a2c37;
+  --fokus-lem:  #ffffff;
+
+  --sirka:      1120px;
+
+  /* POZOR: `ch` je šířka číslice nula, ne znaku. U Nunita vychází
+     1 ch ≈ 1,23 znaku — změřeno kreslením do canvasu, ne odhadem.
+     54ch je tedy zhruba 66 znaků na řádek, uvnitř pásma 45–75.
+     Dřív tu bylo 62ch a jinde 68ch a 74ch, což dávalo 74, 84 a 91
+     znaků. Past je popsaná ve shrnuti.md a stejně se do ní šláplo. */
+  --sirka-text: 54ch;
+
+  --okraj:      clamp(20px, 5vw, 56px);
+  --sekce:      clamp(56px, 7vw, 104px);
+  --text:       clamp(16.5px, 0.45vw + 15px, 18.5px);
+  --radius:     4px;
+
+  /* Nejmenší cíl pro prst. shrnuti.md žádá 44 px včetně odkazů
+     v patičce. Samostatné odkazy si ho berou přes .cil. */
+  --cil:        44px;
+}
+
+/* JEDINÝ ZLOM NA CELÉM WEBU je 860 px a je zapsaný tady, aby se nedal
+   omylem rozejít. Dřív se hlavička a lepící pruh přepínaly na 860 px,
+   ale .dvojice a .kontakt na 820 px — mezi tím běžel desktopový
+   dvousloupec s mobilním hamburgerem a mobilním pruhem najednou.
+   CSS neumí proměnnou v @media, takže hodnota je v pravidlech psaná
+   ručně; tenhle komentář je smlouva. Kdo mění, mění všechna místa:
+   grep -n "860px" style.css */
+
+/* ==== ZAKLAD ============================================================ */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--papir); color:var(--inkoust);
+  font-family:var(--pismo-text); font-size:var(--text); line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  /* Patička na krátkých stránkách (404, prázdný košík). Bez tohohle
+     visela hned pod obsahem a zbytek obrazovky do lišty souhlasu
+     (position:fixed, mimo tok) zůstal holý bílý pruh — vidět hlavně
+     na 404, kde je textu málo. S `min-height` a `main{flex:1}` níž
+     se patička drží dole vždycky, i na dlouhé stránce se nic nemění. */
+  display:flex; flex-direction:column; min-height:100vh;
+}
+body > main{flex:1 0 auto}
+img{max-width:100%; height:auto; display:block}
+a{color:var(--med-text)}
+a:hover{color:var(--med-tmava)}
+
+/* Dvojitý prstenec, viz --fokus v tokenech. Bílá mezera se na světlém
+   podkladu ztratí a nese ji tmavý prstenec; na tmavém pásu je to naopak.
+   Vždycky je vidět aspoň jeden. */
+:focus-visible{
+  outline:3px solid var(--fokus); outline-offset:3px;
+  box-shadow:0 0 0 3px var(--fokus-lem);
+}
+
+/* Cíl pro prst u SAMOSTATNÝCH odkazů — patička, kontakty, hodnocení.
+   Tedy tam, kde odkaz stojí na řádku sám a nikdy se nemusí zalomit.
+
+   UVNITŘ VĚTY SE `.cil` NEPOUŽÍVÁ, a je to vědomá výjimka z pravidla
+   „44 px" ve shrnuti.md. Dva důvody:
+     1. `inline-flex` se nedokáže zalomit doprostřed, takže dlouhý odkaz
+        ve větě by místo zlomení přetekl z obrazovky;
+     2. kdyby se cíl zvětšil svisle (pseudoprvkem), zasáhl by sousední
+        řádky téhož odstavce — a u odkazu `tel:` to znamená, že klepnutí
+        do textu nad ním vytáčí telefon. Náhodný hovor je horší vada než
+        malý cíl.
+   WCAG 2.2 SC 2.5.8 tuhle výjimku zná a jmenuje ji: cíl v souvislé větě
+   je z požadavku vyňatý. */
+.cil{display:inline-flex; align-items:center; min-height:var(--cil);
+  padding-block:calc((var(--cil) - 1.6em) / 2); margin-block:calc((var(--cil) - 1.6em) / -2)}
+
+h1,h2,h3,h4{
+  font-family:var(--pismo-nadpis); font-weight:600; line-height:1.15;
+  margin:0 0 .5em; letter-spacing:.01em;
+}
+h1{font-size:clamp(38px, 7vw, 72px); text-wrap:balance}
+h2{font-size:clamp(28px, 4.2vw, 44px)}
+h3{font-size:clamp(20px, 2.2vw, 26px)}
+h4{font-size:clamp(17px, 1.6vw, 20px)}
+p{margin:0 0 1.1em; max-width:var(--sirka-text); text-wrap:pretty}
+p:last-child{margin-bottom:0}
+
+.obal{max-width:var(--sirka); margin-inline:auto; padding-inline:var(--okraj)}
+.sekce{padding-block:var(--sekce)}
+/* Sekce se službami je cíl kotvy z nabídky, takže jí horní odsazení
+   padne rovnou pod lepící hlavičku a je z něj prázdno. `min()` proto,
+   aby se na úzkém displeji nikdy nezvětšilo — tam je `--sekce` menší
+   než 64 px. Spodní odsazení zůstává, tam žádná kotva nekončí. */
+#sluzby{padding-top:min(var(--sekce), 64px)}
+.sekce--tmavy{background:var(--tma); color:#f2ece6}
+.sekce--tmavy h2,.sekce--tmavy h3{color:#fff}
+.sekce--tmavy a{color:var(--med-svetla)}
+.sekce--tmavy .tlacitko{color:#fff}
+.sekce--tmavy .tlacitko:hover{color:#fff}
+.ctecka{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ==== HLAVICKA ========================================================== */
+.hlavicka{
+  position:sticky; top:0; z-index:50; background:rgba(255,255,255,.96);
+  backdrop-filter:saturate(1.4) blur(6px); border-bottom:1px solid var(--linka);
+}
+.hlavicka__obal{display:flex; align-items:center; justify-content:space-between;
+  gap:16px; min-height:64px; max-width:var(--sirka); margin-inline:auto; padding-inline:var(--okraj)}
+.znacka{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--inkoust)}
+.znacka img{height:38px; width:auto}
+.znacka__text{font-family:var(--pismo-nadpis); font-size:18px; font-weight:600; letter-spacing:.02em}
+.menu{display:flex; gap:clamp(14px,2.2vw,30px); list-style:none; margin:0; padding:0}
+.menu a{
+  text-decoration:none; color:var(--inkoust); font-weight:600; font-size:15px;
+  padding:10px 2px; display:inline-block; border-bottom:2px solid transparent;
+}
+.menu a:hover,.menu a:focus-visible{color:var(--med-text); border-bottom-color:var(--med)}
+
+/* Poslední položka nabídky je tlačítko, ne odkaz. Na počítači je to jediná
+   trvale viditelná výzva k akci — mobil má lepící pruh dole, počítač do
+   27. srpna 2026 neměl po odrolování z hero vůbec nic. */
+.menu a.menu__vyzva{
+  background:var(--med-text); color:#fff; border-radius:var(--radius);
+  padding:9px 16px; border-bottom:0; letter-spacing:.01em;
+}
+.menu a.menu__vyzva:hover,.menu a.menu__vyzva:focus-visible{
+  background:var(--med-tmava); color:#fff; border-bottom-color:transparent;
+}
+.menu-prepinac{display:none; background:none; border:1px solid var(--linka); border-radius:var(--radius);
+  padding:10px 12px; font:inherit; cursor:pointer; min-height:44px; min-width:44px}
+
+@media (max-width:860px){
+  .menu-prepinac{display:block}
+  .menu{
+    position:absolute; inset:100% 0 auto 0; flex-direction:column; gap:0;
+    background:var(--papir); border-bottom:1px solid var(--linka); padding:8px var(--okraj) 16px;
+    /* ZAVŘENO DRŽÍ CSS, NE SKRIPT. Do 27. srpna 2026 zavíral nabídku
+       výhradně JavaScript (`mn.hidden = true` v patičce), takže bez něj
+       zůstala trvale rozbalená a překryla nadpis v hero — ověřeno
+       vypnutím JavaScriptu v prohlížeči. Výchozí stav teď drží styl
+       a skript ho jen přepíná; s vypnutým skriptem zůstane hlavička
+       uklizená. Nabídka jsou čtyři kotvy na sekce téže stránky, takže
+       se bez ní obsah pořád přečte odrolováním. */
+    display:none;
+  }
+  .menu-prepinac[aria-expanded="true"] + nav .menu{display:flex}
+  .menu[hidden]{display:none}
+  .menu a{padding:14px 0; border-bottom:1px solid var(--linka); width:100%}
+  /* I v rozbalené nabídce na telefonu zůstává výzva tlačítkem. Dřív tu
+     byly čtyři stejně vypadající odkazy a „Objednejte se" mezi nimi
+     nebylo k rozeznání od „Kontakt". */
+  .menu a.menu__vyzva{
+    width:auto; align-self:flex-start; margin-top:12px;
+    padding:12px 22px; text-align:center; border-bottom:0;
+  }
+}
+
+/* ==== HERO ============================================================== */
+/* Fotka provozovny je od 27. srpna 2026 <img> se srcset, ne pozadí v CSS.
+   Jako pozadí se nedala dodat v několika velikostech, takže si telefon
+   se šířkou 375 px stahoval obrázek široký 1 800 px (104 kB). Teď má
+   svou variantu 800 px za 39 kB. Navíc dostala `alt`, takže existuje
+   i pro vyhledávání obrázků, kde předtím nebyla vůbec — a je to jediná
+   skutečná fotka provozovny, kterou web má.
+
+   Vrstvy: fotka (0) → ztmavovací přechod (1) → text (2). */
+.hero{
+  background:var(--tma); color:#fff;
+  padding-block:clamp(84px,15vw,170px); position:relative; isolation:isolate;
+}
+.hero__foto{
+  position:absolute; inset:0; z-index:0;
+  width:100%; height:100%; object-fit:cover; object-position:center 45%;
+}
+.hero::after{content:''; position:absolute; inset:0; z-index:1;
+  background:linear-gradient(100deg, rgba(16,25,32,.88) 0%, rgba(16,25,32,.72) 45%, rgba(16,25,32,.35) 100%)}
+/* POZOR NA STRUKTURU. Gutenberg zabaluje obsah skupiny do
+   .wp-block-group__inner-container, takže fotka ani .obal NEJSOU přímí
+   potomci .hero. Kdyby ten obal dostal vlastní z-index, stane se z něj
+   stacking context a přechod z .hero::after se pod něj schová i s celou
+   fotkou — text pak zmizí za obrázkem. Vrstvy se proto číslují na
+   prvcích samotných a obal se nechává na pokoji. */
+.hero .obal{position:relative; z-index:2}
+.hero h1{color:#fff; margin-bottom:.2em; max-width:16ch}
+.hero__slib{max-width:34ch; font-size:clamp(18px,2.1vw,22px); color:#e9dfd5; margin-bottom:1.6em}
+.hero__akce{display:flex; flex-wrap:wrap; gap:14px; max-width:none}
+
+/* proužek s tím, co člověk hledá jako první */
+.pruh-udaju{background:var(--tma); color:#cfd8de; border-top:1px solid rgba(255,255,255,.09);
+  font-size:15.5px; padding-block:16px}
+.pruh-udaju__obsah{display:flex; flex-wrap:wrap; gap:8px clamp(18px,3vw,44px); align-items:center}
+.pruh-udaju p{margin:0; max-width:none}
+.pruh-udaju strong{color:#fff}
+
+/* ODDĚLOVAČ JEN TAM, KDE SE PRUH VEJDE NA JEDEN ŘÁDEK.
+   Historie téhle dvě řádky dlouhé věci stojí za přečtení, aby ji někdo
+   neopravil potřetí špatně:
+     1. ::before na následující položce → když se položka zalomila,
+        začínal nový řádek osiřelou tečkou;
+     2. ::after na položce před ní → zalomení přesunulo tečku na KONEC
+        předchozího řádku, takže řádek končil tečkou, za kterou nic není.
+   Změřeno 27. srpna 2026: pruh se láme na dva řádky na 390 i na 700 px
+   a na jeden se vejde až od 861 px. Vada tedy nebyla mobilní, byla
+   všude pod zlomem.
+   CSS neumí poznat, že je položka poslední na řádku, takže se to neřeší
+   oddělovačem, ale rozvržením: pod zlomem jde každý údaj na vlastní
+   řádek a oddělovač se nekreslí vůbec. */
+@media (min-width:861px){
+  .pruh-udaju p:not(:last-child)::after{content:'·'; margin-left:clamp(18px,3vw,44px); opacity:.45}
+}
+@media (max-width:860px){
+  .pruh-udaju__obsah{flex-direction:column; align-items:flex-start; gap:6px}
+}
+
+/* Hodnocení z firemního profilu. Viditelný text, ZÁMĚRNĚ nikoli
+   strukturovaná data: AggregateRating na web nepatří, viz shrnuti.md. */
+.pruh-udaju__hodnoceni a{color:#cfd8de; text-decoration:none; display:inline-flex;
+  align-items:center; gap:7px; border-bottom:1px solid rgba(219,142,87,.55)}
+.pruh-udaju__hodnoceni a:hover,.pruh-udaju__hodnoceni a:focus-visible{color:#fff; border-bottom-color:var(--med)}
+.pruh-udaju__hodnoceni strong{color:var(--med); font-size:17px}
+.pruh-udaju__hodnoceni a::before{content:'\2605'; color:var(--med); font-size:16px; line-height:1}
+
+/* ==== TLACITKA ========================================================== */
+.tlacitko{
+  display:inline-block; background:var(--med-text); color:#fff; text-decoration:none;
+  font-family:var(--pismo-nadpis); font-weight:600; font-size:17px; letter-spacing:.02em;
+  padding:14px 30px; border-radius:var(--radius); border:0; cursor:pointer;
+  min-height:48px; transition:background .15s ease;
+}
+.tlacitko:hover,.tlacitko:focus-visible{background:var(--med-tmava); color:#fff}
+
+/* „Nejdřív vyberte službu" NENÍ disabled, je jen zatím nepřipravené.
+   Rozdíl je podstatný: `disabled` prvek nedostane klik ani focus, takže
+   se na něm nedá poslouchat a klávesnice ho přeskočí. Tohle tlačítko
+   po kliknutí odroluje k výběru služeb, což je jediná užitečná odpověď.
+   Obrys místo plné mědi říká „ještě ne", aniž by prvek vypadal mrtvě. */
+.tlacitko[aria-disabled="true"]{
+  background:transparent; color:var(--med-text);
+  /* Rámeček byl do 27. srpna 2026 z `--linka`, tedy 1,35:1 proti bílé.
+     Byl to přitom JEDINÝ znak, podle kterého se dalo poznat, že jde
+     o ovládací prvek — a záměr podle komentáře výš zněl „říct ještě ne,
+     aniž prvek vypadá mrtvě". Na snímcích vypadal mrtvě. */
+  box-shadow:inset 0 0 0 2px var(--linka-ovladaci);
+}
+/* Prstenec focusu je taky box-shadow a tenhle selektor má vyšší váhu,
+   takže by ho přebil. Při zaostření se proto obojí spojí do jednoho
+   zápisu — jinak by nepřipravené tlačítko ztratilo bílou mezeru
+   a na tmavém podkladu by focus zmizel. */
+.tlacitko[aria-disabled="true"]:focus-visible{
+  box-shadow:inset 0 0 0 2px var(--linka-ovladaci), 0 0 0 3px var(--fokus-lem);
+}
+.tlacitko[aria-disabled="true"]:hover{
+  background:transparent; color:var(--med-tmava);
+  box-shadow:inset 0 0 0 2px var(--med);
+}
+
+/* ==== SLUZBY ============================================================ */
+/* ==== VÝBĚR SLUŽBY: ŘÁDKY, NE KARTY ====================================
+   Karty se sem dostaly jako převod původního ceníku a na telefonu stály
+   484 px každá. Tři pod sebou daly 1 479 px, takže se na displej nikdy
+   nevešly dvě ceny současně — a „vyber jednu ze tří" je rozhodnutí,
+   které stojí na porovnání. Řádky se vejdou všechny tři najednou.
+
+   Zůstává, co karty uměly: celý řádek je jeden terč pro prst (přes
+   200 px široký) a nic se za běhu nedopočítává, takže CLS zůstává 0. */
+/* ŠÍŘKA JE OMEZENÁ SCHVÁLNĚ. Obal sekce má 1 120 px, ale text řádku končí
+   zhruba v 60 % šířky a cena stojí u pravého okraje — na 1 440 px mezi nimi
+   zbývalo přes 700 px prázdna a vazba „tenhle popis patří k téhle ceně" se
+   na takovou vzdálenost drží špatně. 820 px je krok mezi šířkou textu
+   (54ch ≈ 620 px) a obalem sekce. */
+.sluzby{list-style:none; margin:24px 0 0; padding:0; scroll-margin-top:88px;
+  max-width:820px;
+  border:1px solid var(--linka); border-radius:10px; overflow:hidden; background:var(--papir)}
+.sluzba + .sluzba{border-top:1px solid var(--linka)}
+
+.sluzba__volba{
+  display:grid; width:100%; padding:16px 18px; min-height:var(--cil);
+  grid-template-columns:auto 1fr auto;
+  grid-template-areas:
+    "znak nazev cena"
+    "znak popis popis";
+  align-items:center; gap:4px 14px;
+  background:none; border:0; font:inherit; color:inherit; text-align:left; cursor:pointer;
+  transition:background .15s ease;
+}
+.sluzba__volba:hover{background:#faf7f4}
+
+/* VYBRANÝ STAV se od najetí liší jiným MECHANISMEM, ne jiným odstínem.
+   Dřív byl vybraný rámeček #9b643d a najetý #db8e57 — dvě mědi, 1 px
+   proti 1 px. Na dotyku hover po klepnutí navíc zůstane viset, takže
+   šlo mít zvýrazněnou jinou službu, než jaká byla vybraná. Teď vybraný
+   řádek nese měděný pruh vlevo, teplý podklad a zaškrtnutí. */
+.sluzba__volba[aria-pressed="true"]{
+  background:var(--papir-tepl); box-shadow:inset 4px 0 0 var(--med-text);
+}
+/* Ikona služby. Vybraný řádek k ní přidá měděný odznáček se zaškrtnutím
+   v rohu — kolečko vedle ikony by se na 375 px nevešlo, název s cenou
+   na jednom řádku má přednost, protože kvůli porovnání cen ta přestavba
+   vznikla. Kroužek kolem odznáčku má barvu podkladu vybraného řádku,
+   takže odsedne od ikony. */
+.sluzba__znak{
+  grid-area:znak; position:relative;
+  width:44px; height:44px; display:grid; place-items:center;
+}
+.sluzba__znak img{width:44px; height:44px; object-fit:contain}
+/* Odznáček zůstává UVNITŘ sloupce s ikonou. Do 27. srpna 2026 přesahoval
+   o 7 px doprava a o 6 px dolů; na 390 px se přitom název a délka lámou na
+   dva řádky, takže zaškrtnutí skončilo přesně vedle „45 MINUT" a četlo se
+   jako odrážka u délky, ne jako potvrzení výběru. */
+.sluzba__volba[aria-pressed="true"] .sluzba__znak::after{
+  content:'\2713'; position:absolute; right:-2px; bottom:-2px;
+  width:18px; height:18px; border-radius:50%;
+  background:var(--med-text); color:#fff;
+  display:grid; place-items:center; font-size:11px; line-height:1;
+  box-shadow:0 0 0 2px var(--papir-tepl);
+}
+.sluzba__nazev{
+  grid-area:nazev; font-family:var(--pismo-nadpis); font-weight:600;
+  font-size:clamp(18px,2vw,23px); letter-spacing:.01em; text-transform:lowercase;
+  display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;
+}
+/* Délka služby patří k názvu, ale nesmí s ním soupeřit. */
+.sluzba__cas{
+  font-family:var(--pismo-text); font-size:13px; font-weight:700;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--med-text);
+}
+.sluzba__popis{grid-area:popis; font-size:15px; line-height:1.45; color:#5b6470}
+.sluzba__cena{
+  grid-area:cena; justify-self:end; white-space:nowrap;
+  font-family:var(--pismo-nadpis); font-size:clamp(18px,2vw,24px); font-weight:600;
+  color:var(--inkoust);
+}
+.sluzba__cena .klub{color:var(--med-text)}
+
+/* Na úzkém displeji si popis bere celou šířku řádku. Název a cena
+   zůstávají vedle sebe schválně: „vyber jednu ze tří" je rozhodnutí
+   o porovnání a tři ceny pod sebou se porovnat dají, tři ceny schované
+   za popisem ne. */
+@media (max-width:520px){
+  .sluzba__volba{
+    grid-template-columns:auto 1fr auto;
+    grid-template-areas:
+      "znak nazev cena"
+      "popis popis popis";
+    padding:14px 16px; gap:6px 12px;
+  }
+  .sluzba__znak,.sluzba__znak img{width:38px; height:38px}
+  .sluzba__nazev{font-size:17px; gap:6px}
+  .sluzba__cas{font-size:12px}
+  .sluzba__cena{font-size:17px}
+  .sluzba__popis{font-size:14.5px}
+}
+
+.sekce__uvod{font-size:clamp(17px,1.4vw,19.5px); max-width:var(--sirka-text); margin-bottom:8px}
+.poznamka{font-size:14.5px; color:#6a7684; margin-top:30px; max-width:var(--sirka-text)}
+
+/* ==== DVOUSLOUPEC ======================================================= */
+.dvojice{display:grid; gap:clamp(28px,5vw,60px); grid-template-columns:1fr; align-items:center}
+@media (min-width:861px){ .dvojice{grid-template-columns:1fr 1fr} }
+.dvojice img{border-radius:var(--radius)}
+
+/* ==== KONTAKT =========================================================== */
+.kontakt{display:grid; gap:clamp(28px,4vw,52px); grid-template-columns:1fr}
+@media (min-width:861px){ .kontakt{grid-template-columns:1fr 1fr} }
+.udaj{margin-bottom:22px}
+.udaj__popis{font-size:13.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--med-svetla); margin-bottom:2px}
+.udaj a{color:#fff; text-decoration:none; font-size:19px; font-weight:600}
+.udaj a:hover{text-decoration:underline}
+.udaj__dodatek{margin:6px 0 0; font-size:15px; color:#b6c2cc; max-width:none}
+.mapa{display:block; border-radius:var(--radius); overflow:hidden; position:relative}
+.mapa__popis{display:inline-block; margin-top:10px; font-weight:600}
+/* Uvedení zdroje mapového podkladu. Povinné, viz komentář ve front-page.php. */
+.mapa__zdroj{margin:8px 0 0; font-size:13px; color:#b6c2cc; max-width:none}
+.mapa__zdroj a{color:#b6c2cc}
+
+
+/* ==== PATICKA =========================================================== */
+/* PŘEDĚL MEZI KONTAKTEM A PATIČKOU. Obojí je `--tma`, dotýká se to a na
+   telefonu z toho vzniklo 960 px souvislé tmy na konci stránky bez jediné
+   hranice. Tenká linka je levnější než přebarvovat sekce. */
+.paticka{background:var(--tma); color:#c9d0d6; padding-block:32px; font-size:15px;
+  border-top:1px solid rgba(255,255,255,.10)}
+.paticka a{color:var(--med-svetla)}
+.paticka__radek{display:flex; flex-wrap:wrap; gap:16px 28px; justify-content:space-between; align-items:center}
+.site{display:flex; gap:16px}
+.site a{display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px;
+  border:1px solid #3b4a56; border-radius:var(--radius); text-decoration:none}
+.site svg{width:20px; height:20px; fill:currentColor}
+
+/* Plynulé rolování, ale ne pro toho, kdo si vypnul animace.
+   POŘADÍ JE PODSTATNÉ: `scroll-behavior:smooth` musí stát PŘED blokem
+   pro omezené animace, jinak ho při stejné váze přebije a nastavení
+   uživatele se ignoruje. Přesně tak to tady bylo do 27. srpna 2026. */
+html{scroll-behavior:smooth}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important; transition-duration:.01ms !important}
+  html{scroll-behavior:auto}
+}
+[id]{scroll-margin-top:80px}
+
+/* Po výběru služby se NIKAM neskáče. Dřív se scrollovalo k tlačítku,
+   což na telefonu odsunulo vybranou kartu 1 146 px nad okraj obrazovky
+   a člověk už neviděl, co si vybral. Kontext teď drží lepící souhrn
+   dole (.souhrn), takže výběr zůstává na místě a nic se neztrácí. */
+
+/* ==== MINIMUM PRO BLOKY GUTENBERGU =====================================
+   Blokové styly jádra jsou vypnuté, tohle je jejich náhrada.
+   Je to všechno, co obsah téhle stránky potřebuje. */
+.alignfull{width:100%}
+.wp-block-group{margin:0}
+.wp-block-columns{display:flex; flex-wrap:wrap; gap:28px; margin:0}
+.wp-block-column{flex:1 1 260px; min-width:0}
+.wp-block-image{margin:0}
+.wp-block-image img{border-radius:var(--radius)}
+.has-text-align-center{text-align:center}
+
+/* ==== TEXTOVÉ PODSTRÁNKY ==============================================
+   Zásady, 404 a podobné. Nadpisy z úvodní stránky by tu byly na text
+   příliš velké, hierarchie má být krotká a čitelná. */
+.stranka-text{max-width:var(--sirka-text)}
+.stranka-text h1{font-size:clamp(30px, 4vw, 42px); margin-bottom:.7em}
+.stranka-text h2{font-size:clamp(21px, 2.2vw, 26px); margin-top:1.9em}
+.stranka-text h3{font-size:clamp(18px, 1.7vw, 21px); margin-top:1.5em}
+.stranka-text p,
+.stranka-text li{max-width:none}
+.stranka-text ul{padding-left:1.2em}
+.stranka-text li{margin-bottom:.4em}
+
+/* ==== PROČ K NÁM, tři důvody místo dvou textových bloků s fotkou ======= */
+/* Tři důvody: buď všechny tři vedle sebe, nebo všechny pod sebou.
+   `auto-fit` s minmax dělalo kolem 840 px dva sloupce a třetí kartu
+   samotnou vlevo s prázdnou půlkou vedle. U liché mřížky se auto-fit
+   nepoužívá. */
+.duvody.wp-block-columns{display:grid; gap:clamp(28px,4vw,48px);
+  grid-template-columns:1fr; margin-top:40px}
+@media (min-width:861px){
+  .duvody.wp-block-columns{grid-template-columns:repeat(3,1fr)}
+}
+/* ZAROVNÁNO DOLEVA, ne na střed. Vystředěné byly i čtyřřádkové odstavce
+   („dárkový poukaz"), a to je nejhorší případ: oko nemá kam skočit na
+   začátku dalšího řádku, protože levý okraj se každým řádkem posouvá.
+   Zbytek stránky je zarovnaný doleva, tohle byla jediná výjimka.
+   Nadpis sekce zůstává na střed, ten je jednořádkový. */
+.duvod{text-align:left}
+.duvod__znak{margin:0 0 16px; max-width:none; line-height:0}
+.duvod__znak svg{width:52px; height:52px; fill:none; stroke:var(--med-svetla);
+  stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round}
+.duvod h3{text-transform:lowercase; margin-bottom:.35em}
+.duvod p{max-width:34ch; font-size:16.5px}
+.duvody h2, .sekce--tmavy > .obal > h2{text-align:center}
+
+/* ==== KDO TO TADY VEDE ================================================= */
+.dvojice--foto{align-items:center}
+.dvojice--foto > div:last-child{max-width:420px; justify-self:center}
+.portret img{border-radius:50%; aspect-ratio:1; object-fit:cover; width:100%}
+@media (min-width:861px){
+  .dvojice--foto{grid-template-columns:1.35fr 1fr}
+}
+
+/* ==== CELOPLOŠNÝ PÁS S FOTKOU ========================================== */
+
+/* ==== TLAČÍTKO S OBRYSEM =============================================== */
+.tlacitko--obrys{background:transparent; color:#fff; border:2px solid rgba(255,255,255,.55);
+  padding:12px 28px}
+.tlacitko--obrys:hover,.tlacitko--obrys:focus-visible{background:#fff; color:var(--tma); border-color:#fff}
+
+/* ==== TELEFON SE NELÁME ================================================ */
+.paticka a[href^="tel:"],
+.udaj a[href^="tel:"]{white-space:nowrap}
+.paticka__radek p{max-width:none}
+
+/* ==== LEPÍCÍ VÝZVA NA MOBILU ==========================================
+   Na telefonu je rezervace a telefon vždycky po ruce. Na počítači ne,
+   tam je nabídka nahoře pořád vidět.
+
+   USTUPUJE VE DVOU PŘÍPADECH, obojí řídí IntersectionObserver
+   v obsahu stránky přidáním .vyzva--pryc:
+     1. výzvy v hero jsou na obrazovce — pruh by je zdvojoval a na první
+        obrazovce telefonu stály dvě stejné dvojice tlačítek 400 px
+        od sebe;
+     2. rezervační blok je na obrazovce — tam roli pruhu přebírá lepící
+        souhrn s vybranou službou, který umí víc.
+   Bez JavaScriptu pruh zůstává vidět pořád, což je správné chování. */
+.vyzva{display:none}
+@media (max-width:860px){
+  .vyzva{
+    display:grid; grid-template-columns:1fr 1fr; gap:10px;
+    position:fixed; inset:auto 0 0 0; z-index:60;
+    padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+    background:rgba(255,255,255,.97); border-top:1px solid var(--linka);
+    backdrop-filter:blur(6px);
+    transition:transform .18s ease, opacity .18s ease;
+  }
+  .vyzva--pryc{transform:translateY(110%); opacity:0; pointer-events:none}
+  .vyzva .tlacitko{width:100%; text-align:center; font-size:16px; padding:13px 10px}
+  .vyzva .tlacitko--obrys{color:var(--med-text); border-color:var(--med-text)}
+  .vyzva .tlacitko--obrys:hover{background:var(--med-text); color:#fff}
+  body{padding-bottom:86px}
+}
+
+/* ==== KDYBY AMELIA NEBĚŽELA ============================================
+   Šablona v takovém případě přidá tělu třídu `bez-amelie` (functions.php,
+   oddíl 7b) a shortcody vyprázdní, aby se nevypsaly jako text.
+
+   Ze sekce se tím stane obyčejný ceník: volba holiče a tlačítko zmizí,
+   řádky se přestanou tvářit jako tlačítka. Telefon zůstává v hero,
+   v „Spěchá to?", v kontaktu i v lepícím pruhu, takže se zákazník
+   objedná i tak. */
+.bez-amelie #volba-holici,
+.bez-amelie .volba-druhy,
+/* odstavec o tom, kdo kdy stříhá, mluví o štítcích, které tu nejsou */
+.bez-amelie .volba-druhy + .volba-uvod,
+.bez-amelie .souhrn{display:none}
+.bez-amelie .sluzba__volba{pointer-events:none; cursor:default}
+/* Bez Amelie není co vybírat a žádné potvrzení nepřijde. Věta „Vyberte si
+   službu, pak holiče. Potvrzení vám přijde e-mailem." proto odchází spolu
+   s tím, o čem mluví — jinak by nad prostým ceníkem stál návod k něčemu,
+   co na stránce není. */
+.bez-amelie .jen-s-amelii{display:none}
+.bez-amelie .sluzba__znak::after{content:none}
+.bez-amelie .volba-spech{font-size:17px; color:var(--inkoust); margin-top:24px}
+
+/* ==== POSUVNÍK V OKNĚ AMELIE ==========================================
+   Amelia si posuvník barví značkovou barvou. Na Macu se posuvníky
+   schovávají, na Windows jsou vidět pořád a přes celou výšku formuláře
+   to vypadá jako chyba. Ztlumíme ho.
+
+   Selektor míří na okno, ne na obal formuláře ve stránce. Ten obal od
+   přestavby 26. srpna 2026 neexistuje, takže celý dřívější blok —
+   včetně pravidla pro měděný panel s datem, které JAK-UPRAVIT.md už
+   vedlo jako mrtvý kód — necílil na nic. */
+/* ==== CO ŠABLONA SROVNÁVÁ V OKNĚ AMELIE ==============================
+   Všechno v tomhle bloku je dobrovolné: když se třídy Amelie příští verzí
+   změní, pravidlo prostě necílí na nic a formulář běží dál. */
+
+/* Tlačítko „Pokračovat" bylo v prvním kroku 39 px POD okrajem obrazovky.
+   Naměřeno na 390 × 844: okno je vysoké 931 px, tlačítko sedí na 883 px
+   a nad ním je asi 340 px prázdna. Ve druhém kroku přitom Amelia tutéž
+   lištu ke spodku lepí sama — dva různé zákony v jednom formuláři, a ten
+   horší platil v kroku, kde je lidí nejvíc. */
+.am-forms-dialog .am-fs__main-footer{
+  position:sticky; bottom:0; z-index:3;
+  background:var(--papir);
+  border-top:1px solid var(--linka);
+}
+
+/* ==== PROČ JE TU !important, A JEN TADY =============================
+   Amelia si svoje pravidla píše přes IDčko:
+
+     .amelia-v2-booking #amelia-container .am-advsc__time-zone   (1,2,0)
+
+   Šablona měla proti tomu `.am-forms-dialog .am-advsc__time-zone`,
+   tedy (0,2,0), a PROHRÁVALA. Změřeno 28. srpna 2026: pilulka
+   „Europe/Prague" se v okně celou dobu ukazovala, přestože ji šablona
+   od 27. srpna „schovávala". Nikdo si toho nevšiml, protože se pravidlo
+   v souboru tvářilo, že platí.
+
+   Dopsat do selektoru `#amelia-container` nestačí — vyjde z toho zase
+   (1,2,0), tedy REMÍZA, a tu vyhraje ten, kdo je v pořadí později.
+   Styly Amelie se vkládají až v prohlížeči, takže pozdější je vždycky
+   ona. Ověřeno: s IDčkem v selektoru se pilulka pořád ukazovala.
+
+   Přebít se to dá dvěma způsoby a `!important` je z nich ten čitelnější:
+   druhá cesta je nabalovat na selektor další třídy, dokud to nevyjde,
+   což je stejně silné, ale nikdo pak nepozná, které z nich tam jsou
+   kvůli síle a které kvůli smyslu.
+
+   VLASTNOST, KTEROU TO NERUŠÍ: až Amelia svoje třídy přejmenuje,
+   pravidlo necílí na nic a formulář běží dál. `!important` mění jen to,
+   kdo vyhraje spor, ne to, jestli spor vůbec vznikne. */
+
+/* Pilulka „Europe/Prague" nad kalendářem. Pro kolínské holičství je to
+   údaj bez příjemce. Vypíná se i v nastavení Amelie (JAK-UPRAVIT.md), ale
+   to nastavení žije v databázi a nenasazuje se — tohle platí vždycky. */
+.am-forms-dialog .am-advsc__time-zone{display:none !important}
+
+/* ---- POTVRZOVACÍ OBRAZOVKA ------------------------------------------
+   Poslední obrazovka rezervace: „Máte rezervováno" a pod tím údaje. */
+
+/* 1. YAHOO PRYČ. Amelia nabízí čtyři kalendáře; Yahoo Kalendář v Česku
+      prakticky nikdo nemá a je to čtvrtina plochy nabídky. Karta se
+      pozná podle ikony uvnitř, proto `:has()`. Kdyby prohlížeč `:has()`
+      neuměl, karta prostě zůstane — nic se nerozbije. */
+.am-forms-dialog .am-fs-sb-cs-cals-card:has(.am-icon-yahoo){display:none !important}
+
+/* 2. MÍSTO KONFET LOGO. Amelia dává nad nadpis obrázek s párty
+      píšťalkou — cizí veselí, které s holičstvím nemá nic společného.
+      Obrázek se schová a na jeho místo přijde logo podniku.
+
+      Pseudoprvek, ne výměna `src`: `.am-fs__congrats-main` je sloupcový
+      flexbox se zarovnáním na střed, takže se `::before` sám postaví
+      tam, kde byl obrázek. Ameliiny animace jednotlivých řádků jedou
+      přes `nth-child`, a ten pseudoprvky nepočítá — pořadí se tedy
+      nerozhodí.
+
+      Soubor je týž jako v hlavičce webu, takže se už stáhl a je v cache.
+      Poměr stran 152 : 176 musí sedět, jinak se logo rozmázne. */
+.am-forms-dialog .am-fs__congrats-main > img{display:none !important}
+.am-forms-dialog .am-fs__congrats-main::before{
+  content:""; display:block;
+  width:44px; height:51px; margin:0 0 12px;
+  background:url("obrazky/logo-152.webp") center/contain no-repeat;
+}
+
+.am-forms-dialog ::-webkit-scrollbar{width:8px; height:8px}
+.am-forms-dialog ::-webkit-scrollbar-track{background:transparent}
+.am-forms-dialog ::-webkit-scrollbar-thumb{background:#d4cdc6; border-radius:8px}
+.am-forms-dialog ::-webkit-scrollbar-thumb:hover{background:#b9b0a7}
+.am-forms-dialog,.am-forms-dialog *{scrollbar-width:thin; scrollbar-color:#d4cdc6 transparent}
+
+/* ==== CO ŠABLONA DOPLŇUJE DO OKNA AMELIE ==============================
+   Tři věci, které Amelia neumí a které do rezervace patří. Vkládá je
+   js/rezervace.js a všechny jsou dobrovolné — když se její značky příští
+   verzí změní, nevloží se nic a formulář poběží dál.
+
+   .kb-souhrn  co se objednává. Amelia to v okně neukáže nikde, ani ve
+               svém bočním panelu, který je krokovník, ne souhrn.
+               Vkládá se jako pruh do `.el-dialog`, hned za hlavičku
+               s křížkem — proč zrovna tam, je v komentáři u vlozSouhrn().
+   .kb-hvezda  hvězdička u e-mailu a telefonu. V nastavení jsou povinné,
+               ale formulář to nepřizná.
+   .kb-zasek   když se okno zasekne na skeletonech, po dvanácti vteřinách
+               nabídne telefon. Bez toho tam šedé obdélníky zůstanou
+               napořád, ověřeno zablokováním jejího API. */
+.kb-souhrn{
+  display:block; margin:0; max-width:none; padding:12px 16px; line-height:1.45;
+  background:var(--papir-tepl);
+  border-top:1px solid var(--linka); border-bottom:1px solid var(--linka);
+  border-left:4px solid var(--med-text);
+  font-family:var(--pismo-text); font-size:14.5px; line-height:1.4;
+  font-weight:600; color:var(--inkoust); text-align:left;
+}
+.kb-hvezda{color:var(--med-text)}
+
+/* Hláška o zaseknutí leží napevno přes celé okno, ne v jeho těle: tělo
+   je flexbox v řádku a cokoli se do něj vloží se stane sloupcem vedle
+   obsahu. Skeletony pod tím nemá cenu ukazovat, když se stejně nikdy
+   nedopočítají, tak je hláška překryje. */
+.kb-zasek{
+  position:fixed; z-index:5; inset:0; margin:auto; width:min(340px, calc(100vw - 48px));
+  height:max-content; padding:22px; text-align:center;
+  border:1px solid var(--linka); border-radius:10px;
+  background:var(--papir); box-shadow:0 12px 40px rgba(26,44,55,.22);
+}
+.kb-zasek p{margin:0 0 16px; max-width:none; font-size:15px; line-height:1.5}
+
+/* Táž hláška se používá i v lepícím souhrnu na stránce, když se okno
+   nepodaří otevřít vůbec. Tam nesmí být přes celý viewport — je součástí
+   pruhu, ne překryv nad formulářem. */
+.souhrn .kb-zasek{
+  position:static; inset:auto; width:100%; margin:0; padding:14px;
+  text-align:left; box-shadow:none; background:var(--papir-tepl);
+}
+.souhrn .kb-zasek p{margin:0 0 10px; font-size:14.5px}
+
+/* ==== VOLBA SLUŽBY A HOLIČE PŘED REZERVACÍ =============================
+   Amelia nemá ve svém rozbalovátku volbu „kdokoli" a zrušit vybraného
+   holiče jde jen křížkem, který se ukáže při najetí myší. Na dotykovém
+   displeji tedy nijak. Volba proto žije tady, v šabloně, kde je
+   „Kdokoli je volný" plnohodnotná možnost a dá se k ní vrátit.
+
+   Amelia dostává výběr přes parametry shortcode a její vlastní políčko
+   s holičem je v nastavení schované. */
+.volba{margin-top:clamp(32px,3vw,40px)}
+.volba h3{font-size:clamp(23px,2.4vw,30px); text-transform:lowercase; margin:0 0 .5em}
+.volba-uvod{max-width:var(--sirka-text); margin:0}
+/* Specifičnost musí přebít zkratku margin v .volba h3 výš, jinak se nadpis
+   nalepí na poznámku nad ním. */
+.volba h3.volba-druhy{margin-top:clamp(46px,5vw,68px)}
+.volba-spech{font-size:15.5px; color:#6f6760; margin-top:32px; max-width:var(--sirka-text)}
+
+
+.volba-holici{display:flex; flex-wrap:wrap; gap:12px; margin-top:20px}
+.volba-holic{display:inline-flex; align-items:center; gap:9px; background:var(--papir);
+  /* Obrys ovládacího prvku, ne ozdoba — proto `--linka-ovladaci`. */
+  border:1px solid var(--linka-ovladaci); padding:7px 16px 7px 8px; border-radius:999px; font:inherit;
+  font-size:15.5px; color:inherit; cursor:pointer; min-height:var(--cil);
+  transition:background .15s ease}
+.volba-holic:hover{background:#f6f2ee}
+
+/* VYBRANÝ STAV se od najetí liší mechanismem, ne odstínem — to platí dál.
+   Změnila se ale HLASITOST. Do 27. srpna 2026 byl vybraný štítek plná měď
+   s bílým textem, takže nejnápadnějším prvkem na obrazovce byl PŘEDVYBRANÝ
+   „Kdokoli je volný" — tedy volba, se kterou není co dělat — zatímco
+   skutečná výzva k akci vedle něj byla bledý obrys. Hierarchie naruby.
+
+   Teď je vybraný štítek zřetelný, ale tichý: teplý podklad, dvojnásobně
+   silný měděný obrys, měděný text a plné kolečko. Od najetí (jen jemné
+   podbarvení) se plete nedá, od tlačítka nekonkuruje. */
+.volba-holic[aria-pressed="true"]{
+  background:var(--papir-tepl); border:2px solid var(--med-text); color:var(--med-text);
+  padding:6px 15px 6px 7px;   /* o 1 px míň, ať silnější obrys nehne rozměrem */
+}
+.volba-holic[aria-pressed="true"] .volba-kolo{background:var(--med-text); color:#fff}
+/* Zaškrtnutí za jménem. Když se obrys nevybraných štítků zvedl na
+   `--linka-ovladaci` kvůli kontrastu (3,39:1 místo 1,35:1), zeslábl tím
+   rozdíl proti vybranému — čtyři měděně orámované pilulky vypadaly, že
+   jsou vybrané všechny. Zaškrtnutí je rozdíl MECHANISMEM, ne odstínem,
+   a nedá se splést s najetím myší. */
+.volba-holic[aria-pressed="true"]::after{
+  content:'\2713'; margin-left:2px; font-size:13px; font-weight:700; line-height:1;
+}
+/* Změřeno: #5b6470 na teplém papíru 5,62:1. Dřív tu bylo #f4e3d4 při
+   opacity .85 na mědi, tedy 3,30:1 při velikosti 13 px — propadalo to
+   WCAG AA a nikdo si toho nevšiml, protože se to objeví až po kliknutí. */
+.volba-holic[aria-pressed="true"] .volba-volno{color:#5b6470}
+.volba-kolo{width:30px; height:30px; border-radius:50%; background:#f1e7dc; color:var(--med-tmava);
+  display:grid; place-items:center; font-family:var(--pismo-nadpis); font-size:14px; font-weight:600}
+.volba-holic--kdokoli .volba-kolo{background:var(--tma); color:#fff}
+/* Volná kapacita je nejcennější údaj, jaký o holičích máme (PREDANI.md),
+   ale nesmí přebít jméno. Menší písmo, ne jiná barva.
+   BEZ `opacity`: průhlednost se násobí s podkladem a kontrast se pak nedá
+   spočítat z tokenů. Barva je zapsaná natvrdo a změřená. */
+.volba-volno{font-size:13px; color:#5b6470; margin-left:2px}
+
+/* ==== LEPÍCÍ SOUHRN VÝBĚRU =============================================
+   Nese dvě věci, které se dřív ztrácely: CO je vybrané a tlačítko dál.
+   Lepí se ke spodku okna, dokud je rezervační blok na obrazovce, takže
+   výběr je vidět pořád — i když člověk roluje mezi službami a holiči.
+
+   Pod ním nesmí zároveň běžet mobilní pruh .vyzva; přepíná je
+   IntersectionObserver v obsahu stránky (třída .vyzva--pryc). */
+/* Táž šířka jako seznam služeb — souhrn k němu patří a rozevřený přes
+   celý obal by měl text vlevo a tlačítko o metr dál vpravo. */
+.souhrn{
+  position:sticky; bottom:0; z-index:40; margin-top:28px; max-width:820px;
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;
+  gap:12px 20px; padding:14px 18px calc(14px + env(safe-area-inset-bottom));
+  background:rgba(255,255,255,.97); backdrop-filter:blur(6px);
+  border:1px solid var(--linka); border-radius:10px;
+}
+/* PRÁZDNÝ STAV NEMÁ CO SHRNOVAT. Do 27. srpna 2026 tu stálo „Vyberte
+   službu z nabídky výš." a hned pod tím tlačítko „Nejdřív vyberte
+   službu" — dvě věty, které říkají totéž, a na telefonu zabíraly 117 px
+   ze 844, tedy sedminu obrazovky, ještě než člověk cokoli udělal. Navíc
+   přitom zakrývaly poznámku o hvězdičce u ceny.
+   Tlačítko zůstává (dělá něco užitečného: odveze k výběru a zaostří první
+   službu), věta odchází. Řídí to `souhrn--prazdny` z js/rezervace.js. */
+.souhrn__text{margin:0; max-width:none; font-size:15.5px; line-height:1.45}
+.souhrn--prazdny .souhrn__text{display:none}
+.souhrn--prazdny{justify-content:flex-end}
+
+/* ==== ABY SE NA JEDNU OBRAZOVKU VEŠEL CELÝ CENÍK =====================
+   Naměřeno 28. srpna 2026 na MacBooku Air 15" (1470 × 830) po kliknutí
+   na „Naše služby" v nabídce:
+
+     od horního okraje k prvnímu řádku ceníku   479 px  (58 % obrazovky)
+     ceník sám                                  296 px
+     lepící souhrn dole                          84 px
+
+   Třetí služba se tedy nevešla — a co je horší, souhrn ji PŘEKRÝVAL,
+   takže to nevypadalo jako „níž je toho víc", ale jako useknutá stránka.
+
+   Řeší se to třemi drobnostmi výš (menší mezery nad ceníkem a nad
+   blokem rezervace, kratší horní odsazení právě téhle sekce) a jednou
+   tady. Dohromady 155 px, takže se ceník vejde celý i s rezervou. */
+
+/* LIŠTA SE LEPÍ POŘÁD, I V PRÁZDNÉM STAVU.
+   28. srpna 2026 se vyzkoušelo ji v prázdném stavu odlepit, aby
+   nepřekrývala třetí službu v ceníku. Vráceno: je to jediná trvalá
+   výzva, kterou na počítači po odrolování z hero vidno — pruh `.vyzva`
+   je jen pro telefon (`display:none` nad 860 px). Bez ní zůstane
+   obrazovka bez čehokoli, co po člověku něco chce.
+
+   Překrývání se místo toho zmenšilo mezerami nad ceníkem (viz výš)
+   a nižším odsazením prázdné lišty tady. Zbytek je vlastnost každé
+   spodní lepící lišty: něco pod sebou zakrývá, a to je cena za to,
+   že je pořád po ruce. */
+.souhrn--prazdny{padding-top:10px; padding-bottom:calc(10px + env(safe-area-inset-bottom))}
+.souhrn__text strong{font-weight:700}
+/* Cena má vlastní řádek a nesmí se zalomit uprostřed. Dřív z „490 / 540 Kč"
+   vycházelo „490" a pod tím „/ 540 Kč". */
+.souhrn__cena{font-weight:700; white-space:nowrap}
+/* Jmenovaný holič. Kdo si vybere službu a hned klepne na Vybrat termín,
+   nemusí se k výběru holiče vůbec dostat — tady se to řekne nahlas.
+   Jméno je odkaz zpátky na „kdo vás zkulturní?“, protože ten výběr je
+   POD souhrnem a dá se přehlédnout. */
+.souhrn__zmena{font-size:14px; color:#5b6470}
+/* Svislé odsazení JEN kvůli prstu: řádek je vysoký 19 px, což je na
+   dotyk málo, a 82 % návštěv je dotyk. U řádkového prvku se tím řádka
+   neroztáhne, zvětší se jen plocha, na kterou jde klepnout. */
+.souhrn__zmena a{padding:6px 0}
+.souhrn .tlacitko{flex:none}
+@media (max-width:520px){
+  .souhrn{border-radius:10px 10px 0 0; margin-inline:calc(var(--okraj) * -1);
+    border-inline:0; border-bottom:0}
+  .souhrn .tlacitko{width:100%; text-align:center}
+}
+
+.volba-skryte{position:absolute; width:1px; height:1px; overflow:hidden;
+  clip:rect(0 0 0 0); white-space:nowrap}
+
+/* Bez JavaScriptu výběr služby nefunguje — drží ho skript. Místo mrtvého
+   tlačítka se ukáže telefon. Nález D14. */
+.volba-bezjs{margin-top:28px; padding:16px 18px; border:1px solid var(--linka);
+  border-radius:10px; background:var(--papir-tepl); font-size:15.5px}
+.volba-bezjs p{max-width:none; margin:0}
+
+/* ==== LIŠTA SOUHLASU ==================================================
+   Existuje jen kvůli měřicímu kódu Mety. Do 1. září 2026 web do zařízení
+   neukládal nic a lištu vědomě neměl — rozbor je v REKLAMA.md.
+
+   TŘI VĚCI, KTERÉ TU NEJSOU NÁHODOU:
+
+   1. Obě tlačítka vypadají stejně. ÚOOÚ žádá, aby odmítnutí bylo stejně
+      snadné jako přijetí; „přijmout" medově a „odmítnout" jako šedý text
+      je přesně to, co se nesmí. Proto obě jako .tlacitko--obrys-tmavy,
+      stejná šířka, vedle sebe.
+   2. Není tu křížek. Zavřít lištu bez odpovědi znamená tichý souhlas.
+   3. z-index 70 je nad lepícím pruhem (60) a hlavičkou (50), ale POD
+      oknem Amelie, které si Element Plus kreslí kolem 2000. Je to
+      záměr: rezervace je smysl webu a lišta jí nemá stát v cestě.
+      Nerozhodnutý souhlas nikoho nebrzdí, pixel se prostě nespustí.  */
+.souhlas{
+  position:fixed; inset:auto 0 0 0; z-index:70;
+  background:var(--papir); border-top:2px solid var(--med);
+  box-shadow:0 -6px 24px rgba(26,44,55,.13);
+  padding:16px var(--okraj) calc(16px + env(safe-area-inset-bottom));
+  font-size:15.5px; line-height:1.5;
+}
+.souhlas__obal{max-width:var(--sirka); margin:0 auto;
+  display:flex; gap:18px 26px; align-items:flex-start; flex-wrap:wrap}
+.souhlas__text{flex:1 1 380px; margin:0; max-width:none}
+.souhlas__text strong{font-family:var(--pismo-nadpis); letter-spacing:.01em}
+.souhlas__tlacitka{flex:0 0 auto; display:flex; gap:10px; flex-wrap:wrap}
+.souhlas__tlacitka .tlacitko{font-size:16px; padding:12px 22px; min-width:150px;
+  text-align:center}
+
+/* Tmavý obrys, ne bílý: .tlacitko--obrys je psané pro tmavý pás a na
+   bílém podkladu by zmizel. */
+.tlacitko--obrys-tmavy{background:transparent; color:var(--inkoust);
+  border:2px solid var(--linka-ovladaci)}
+.tlacitko--obrys-tmavy:hover,.tlacitko--obrys-tmavy:focus-visible{
+  background:var(--inkoust); color:#fff; border-color:var(--inkoust)}
+
+/* Odvolání souhlasu v patičce. Musí to být tlačítko, ne odkaz — nikam
+   nevede. Vypadá ale jako ostatní odkazy v patičce, protože pro čtenáře
+   je to totéž. `.cil` mu dává 44px cíl pro prst jako ostatním odkazům. */
+.odkaz-jako-text{background:none; border:0; padding:0; font:inherit;
+  color:var(--med-svetla); text-decoration:underline; text-underline-offset:3px;
+  cursor:pointer}
+.odkaz-jako-text:hover{color:#fff}
+
+.souhlas__vic{background:none; border:0; padding:6px 0; margin:0;
+  font:inherit; color:var(--med-text); text-decoration:underline;
+  text-underline-offset:3px; cursor:pointer}
+.souhlas__podrobnosti{flex:1 1 100%; margin:4px 0 0; padding-top:14px;
+  border-top:1px solid var(--linka); font-size:14.5px; color:#4a5464}
+.souhlas__podrobnosti p{max-width:none; margin:0 0 8px}
+.souhlas__podrobnosti table{border-collapse:collapse; width:100%; margin-top:6px}
+.souhlas__podrobnosti th,.souhlas__podrobnosti td{
+  text-align:left; padding:5px 12px 5px 0; vertical-align:top;
+  border-bottom:1px solid var(--linka)}
+.souhlas__podrobnosti th{font-family:var(--pismo-nadpis); font-weight:600;
+  white-space:nowrap}
+
+@media (max-width:640px){
+  .souhlas{padding-top:14px; font-size:15px}
+  .souhlas__tlacitka{width:100%}
+  .souhlas__tlacitka .tlacitko{flex:1 1 0; min-width:0; padding:13px 8px}
+  /* Tabulka s cookies se na telefon nevejde do sloupců. Posouvá se
+     stranou uvnitř sebe, ne celá stránka. */
+  .souhlas__podrobnosti{overflow-x:auto}
+}
+
+/* Dokud se nerozhodlo, lepící výzva ustoupí. Dva pruhy pod sebou berou
+   na telefonu přes 170 px z obrazovky. Třídu přidává js/souhlas.js na
+   <html>, ne na <body>: <body> si třídy skládá WordPress a mohl by je
+   přepsat. */
+html.ma-souhlas-listu .vyzva{display:none}
+
+/* U1 (BOOKING-FIX-LOG.md): tohle pravidlo tu chybělo úplně — `.souhrn`
+   (lišta s „Vybrat termín") se schovat nesmí, na rozdíl od `.vyzva` výš.
+   Lišta souhlasu (`.souhlas`, z-index 70) je jinak nad `.souhrn`
+   (z-index 40) a stojí přesně v cestě hlavnímu tlačítku. `--vyska-
+   souhlasu` měří a průběžně aktualizuje `js/souhlas.js`
+   (`ResizeObserver`), aby `.souhrn` zůstal nad lištou i po rozbalení
+   „Podrobnosti" nebo otočení telefonu. Bez proměnné (starý prohlížeč
+   bez `ResizeObserver`) je `bottom:0` — stejné chování jako dřív, ne
+   rozbité o nic víc. */
+html.ma-souhlas-listu .souhrn{bottom:var(--vyska-souhlasu, 0px)}

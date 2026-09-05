@@ -1,0 +1,47 @@
+---
+const base = import.meta.env.BASE_URL;
+const { poukazyUrl = `${base}darkove-poukazy/` } = Astro.props;
+---
+<header class="hlavicka">
+  <div class="hlavicka__obal">
+    <a class="znacka" href={base}>
+      <img src={`${base}obrazky/logo-152.webp`} alt="" width="33" height="38" decoding="async">
+      <span class="znacka__text">Kulturní Barbershop</span>
+    </a>
+
+    <button class="menu-prepinac" aria-expanded="false" aria-controls="hlavni-menu">Menu</button>
+
+    <nav aria-label="Hlavní nabídka">
+      <ul class="menu" id="hlavni-menu">
+        <li><a href={`${base}#sluzby`}>Naše služby</a></li>
+        <li><a href={`${base}#klub`}>Klub gentlemanů</a></li>
+        <li><a href={`${base}#kontakt`}>Kontakt</a></li>
+        <li><a href={poukazyUrl}>Poukazy</a></li>
+        <li><a class="menu__vyzva" href={`${base}#objednat`}>Objednat termín</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+(function () {
+  var tl = document.querySelector('.menu-prepinac');
+  var mn = document.getElementById('hlavni-menu');
+  if (!tl || !mn) return;
+  function uzavri(stav) {
+    tl.setAttribute('aria-expanded', stav ? 'true' : 'false');
+    if (window.matchMedia('(max-width:860px)').matches) { mn.hidden = !stav; }
+    else { mn.hidden = false; }
+  }
+  uzavri(false);
+  tl.addEventListener('click', function () {
+    uzavri(tl.getAttribute('aria-expanded') !== 'true');
+    if (tl.getAttribute('aria-expanded') === 'true') { mn.querySelector('a').focus(); }
+  });
+  mn.addEventListener('click', function (e) { if (e.target.tagName === 'A') uzavri(false); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && tl.getAttribute('aria-expanded') === 'true') { uzavri(false); tl.focus(); }
+  });
+  window.addEventListener('resize', function () { uzavri(false); });
+})();
+</script>

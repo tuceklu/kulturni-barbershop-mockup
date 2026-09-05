@@ -1,0 +1,83 @@
+/* Styly jen pro tenhle statický mockup — v ostrém webu nejsou.
+   Rezervaci na ostrém webu obsluhuje Amelia, tady je to jen klikací
+   maketa se stejnými barvami a písmy jako zbytek webu. */
+
+.demo-pasek{
+  background:var(--tma); color:#f2ece6; text-align:center;
+  font-size:14px; padding:8px var(--okraj); position:relative; z-index:80;
+}
+.demo-pasek strong{color:var(--med-svetla)}
+
+/* ---- MODÁLNÍ OKNO REZERVACE ------------------------------------------ */
+.rez-podklad{
+  position:fixed; inset:0; z-index:200; background:rgba(26,44,55,.55);
+  display:flex; align-items:flex-start; justify-content:center;
+  padding:24px 16px; overflow-y:auto;
+}
+.rez-podklad[hidden]{display:none}
+.rez-okno{
+  background:var(--papir); border-radius:12px; max-width:560px; width:100%;
+  margin-top:32px; box-shadow:0 24px 60px rgba(26,44,55,.35);
+}
+.rez-hlavicka{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 22px; border-bottom:1px solid var(--linka);
+}
+.rez-hlavicka h2{margin:0; font-size:20px}
+.rez-zavrit{
+  background:none; border:1px solid var(--linka-ovladaci); border-radius:50%;
+  width:36px; height:36px; font-size:18px; line-height:1; cursor:pointer;
+  color:var(--inkoust);
+}
+.rez-zavrit:hover{background:var(--papir-tepl)}
+.rez-telo{padding:20px 22px 24px}
+.rez-ukazka{
+  margin:0 0 18px; padding:10px 14px; font-size:13.5px; color:#5c6675;
+  background:var(--papir-tepl); border:1px solid var(--linka); border-radius:6px;
+}
+.rez-krok{display:none}
+.rez-krok--aktivni{display:block}
+.rez-krok h3{margin:0 0 12px; font-size:18px; text-transform:lowercase}
+
+.rez-kalendar{
+  display:grid; grid-template-columns:repeat(7,1fr); gap:6px; margin-bottom:18px;
+}
+.rez-den-nazev{text-align:center; font-size:12px; color:#5c6675; padding-bottom:4px}
+.rez-den{
+  aspect-ratio:1; border:1px solid var(--linka); border-radius:6px; background:var(--papir);
+  font:inherit; font-size:14px; cursor:pointer; color:var(--inkoust);
+}
+.rez-den:disabled{color:#c7c1ba; cursor:default; background:#faf9f7}
+.rez-den:not(:disabled):hover{background:var(--papir-tepl)}
+.rez-den[aria-pressed="true"]{background:var(--med-text); color:#fff; border-color:var(--med-text)}
+
+.rez-casy{display:grid; grid-template-columns:repeat(auto-fill,minmax(84px,1fr)); gap:8px; margin-bottom:20px}
+.rez-cas{
+  padding:10px 6px; border:1px solid var(--linka-ovladaci); border-radius:6px; background:var(--papir);
+  font:inherit; font-size:14.5px; cursor:pointer; text-align:center; color:var(--inkoust);
+}
+.rez-cas:hover{background:var(--papir-tepl)}
+.rez-cas[aria-pressed="true"]{background:var(--med-text); color:#fff; border-color:var(--med-text)}
+
+.rez-navigace{display:flex; justify-content:space-between; gap:12px; margin-top:4px}
+.rez-zpet{
+  background:none; border:1px solid var(--linka-ovladaci); color:var(--med-text);
+  border-radius:6px; padding:12px 18px; font:inherit; font-weight:600; cursor:pointer;
+}
+.rez-zpet:hover{background:var(--papir-tepl)}
+
+/* Potvrzovací obrazovka — logo místo konfet, stejně jako v Amelii. */
+.rez-hotovo{text-align:center; padding:8px 0 4px}
+.rez-hotovo img{width:44px; height:51px; margin:0 auto 14px}
+.rez-hotovo h3{margin:0 0 8px}
+.rez-shrnuti{
+  text-align:left; margin:18px 0 0; padding:14px 16px; background:var(--papir-tepl);
+  border:1px solid var(--linka); border-left:4px solid var(--med-text); border-radius:6px;
+  font-size:15px;
+}
+.rez-shrnuti p{margin:0 0 4px; max-width:none}
+.rez-shrnuti p:last-child{margin-bottom:0}
+
+@media (max-width:480px){
+  .rez-okno{margin-top:0; border-radius:0; min-height:100vh}
+}

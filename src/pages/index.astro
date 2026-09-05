@@ -1,0 +1,245 @@
+---
+import Layout from '../layouts/Layout.astro';
+import RezervaceModal from '../components/RezervaceModal.astro';
+const base = import.meta.env.BASE_URL;
+---
+<Layout
+  title="Kulturní Barbershop Kolín – barber a pánské kadeřnictví"
+  jeUvodni={true}
+>
+<main id="obsah">
+
+  <div class="wp-block-group alignfull hero">
+    <img class="hero__foto" src={`${base}obrazky/hero-1200.webp`}
+      srcset={`${base}obrazky/hero-800.webp 800w, ${base}obrazky/hero-1200.webp 1200w, ${base}obrazky/hero-1800.webp 1800w`}
+      sizes="100vw" width="1800" height="1012"
+      alt="Interiér Kulturního Barbershopu v Kolíně — dvě holičská křesla před zrcadly, šachovnicová podlaha a rámované plakáty na zelené stěně"
+      fetchpriority="high" decoding="async">
+    <div class="obal">
+      <h1>Kulturní Barbershop v Kolíně</h1>
+      <p class="hero__slib">Pánské kadeřnictví a holičství na Zámecké, kousek od náměstí. Střih, holení břitvou a nápoj v ceně. Stříháme od roku 2019.</p>
+      <p class="hero__akce"><a class="tlacitko" href="#objednat">Objednat termín</a> <a class="tlacitko tlacitko--obrys" href="tel:+420704364162">Zavolat</a></p>
+    </div>
+  </div>
+
+  <div class="wp-block-group alignfull pruh-udaju">
+    <div class="obal pruh-udaju__obsah">
+      <p><strong>Zámecká 85, Kolín</strong></p>
+      <p>Po–Čt 7:00–20:00 · Pá do 15:30</p>
+      <p class="pruh-udaju__hodnoceni"><a class="cil" href="https://maps.app.goo.gl/QmGfdKV3uwkW5nTu6" rel="noopener"><strong>4,9</strong> z více než 100 recenzí na Googlu<span class="ctecka">, odkaz vede mimo tento web</span></a></p>
+    </div>
+  </div>
+
+  <div class="wp-block-group alignfull sekce" id="sluzby">
+    <div class="obal">
+      <h2>naše služby</h2>
+      <p class="sekce__uvod">Klasické holičství pro pány, kteří na sebe nemají čas, ale chtějí vypadat, že ano. Sednete si, dáte si něco k pití a za pětačtyřicet minut odcházíte hotoví.</p>
+
+      <div class="volba" id="objednat">
+        <h3>co to bude?</h3>
+        <p class="volba-uvod">Bývá u nás plno, takže bez objednání to znamená čekat, nebo přijít jindy.
+          Vyberte si službu, pak holiče. Potvrzení vám přijde e-mailem.</p>
+
+        <ul class="sluzby" id="volba-sluzby" role="group" aria-label="Vyberte službu">
+          <li class="sluzba">
+            <button type="button" class="sluzba__volba" aria-pressed="false"
+              aria-label="Vybrat kulturní střih, 45 minut, 540 Kč, pro stálé zákazníky 490 Kč" aria-describedby="sluzba-popis-2"
+              data-jm="kulturní střih" data-cas="45 minut" data-cena="490 / 540 Kč">
+              <span class="sluzba__znak" aria-hidden="true"><img src={`${base}obrazky/ikona-strih.webp`} alt="" width="44" height="44" loading="lazy" decoding="async"></span>
+              <span class="sluzba__nazev">kulturní střih <span class="sluzba__cas">45 minut</span></span>
+              <span class="sluzba__popis" id="sluzba-popis-2">Ostříhání, abyste vypadal k světu. V ceně je umytí, střih strojkem i nůžkami, úprava kontur a styling.</span>
+              <span class="sluzba__cena"><span class="klub">490</span><span aria-hidden="true">*</span> / 540&nbsp;Kč</span>
+            </button>
+          </li>
+          <li class="sluzba">
+            <button type="button" class="sluzba__volba" aria-pressed="false"
+              aria-label="Vybrat kulturní oholení, 45 minut, 540 Kč, pro stálé zákazníky 490 Kč" aria-describedby="sluzba-popis-1"
+              data-jm="kulturní oholení" data-cas="45 minut" data-cena="490 / 540 Kč">
+              <span class="sluzba__znak" aria-hidden="true"><img src={`${base}obrazky/ikona-holeni.webp`} alt="" width="44" height="44" loading="lazy" decoding="async"></span>
+              <span class="sluzba__nazev">kulturní oholení <span class="sluzba__cas">45 minut</span></span>
+              <span class="sluzba__popis" id="sluzba-popis-1">Dohladka s napařením nebo úprava vousů. Břitva je dobře nabroušená, přijďte klidně v bílé košili.</span>
+              <span class="sluzba__cena"><span class="klub">490</span><span aria-hidden="true">*</span> / 540&nbsp;Kč</span>
+            </button>
+          </li>
+          <li class="sluzba">
+            <button type="button" class="sluzba__volba" aria-pressed="false"
+              aria-label="Vybrat komplet zkulturnění, 90 minut, 890 Kč, pro stálé zákazníky 830 Kč" aria-describedby="sluzba-popis-6"
+              data-jm="komplet zkulturnění" data-cas="90 minut" data-cena="830 / 890 Kč">
+              <span class="sluzba__znak" aria-hidden="true"><img src={`${base}obrazky/ikona-komplet.webp`} alt="" width="44" height="44" loading="lazy" decoding="async"></span>
+              <span class="sluzba__nazev">komplet zkulturnění <span class="sluzba__cas">90 minut</span></span>
+              <span class="sluzba__popis" id="sluzba-popis-6">Střih i holení v jedné návštěvě a ještě to vyjde levněji, než kdybyste přišel dvakrát.</span>
+              <span class="sluzba__cena"><span class="klub">830</span><span aria-hidden="true">*</span> / 890&nbsp;Kč</span>
+            </button>
+          </li>
+        </ul>
+
+        <p class="poznamka">Nižší cena platí pro <a href="#klub">stálé zákazníky</a>.</p>
+
+        <h3 class="volba-druhy" id="kdo-vas-zkulturni">kdo vás zkulturní?</h3>
+        <p class="volba-uvod">Sára stříhá odpoledne, Honza odpoledne a večer, Lukáš ráno.
+          Když je vám to jedno, nechte „Kdokoliv bude volný" — nabídne zdaleka nejvíc termínů.
+          Na konkrétního holiče se objednávejte, jen když na něm trváte; volných časů bude míň.</p>
+
+        <div class="volba-holici" id="volba-holici" role="group" aria-label="Vyberte holiče">
+          <button class="volba-holic volba-holic--kdokoli" type="button" aria-pressed="true" data-jm="kdokoliv bude volný"><span class="volba-kolo" aria-hidden="true">•</span> Kdokoliv bude volný</button>
+          <button class="volba-holic" type="button" aria-pressed="false" data-jm="Sára"><span class="volba-kolo" aria-hidden="true">S</span> Sára <span class="volba-volno">častěji volno</span></button>
+          <button class="volba-holic" type="button" aria-pressed="false" data-jm="Honza"><span class="volba-kolo" aria-hidden="true">H</span> Honza</button>
+          <button class="volba-holic" type="button" aria-pressed="false" data-jm="Lukáš"><span class="volba-kolo" aria-hidden="true">L</span> Lukáš <span class="volba-volno">častěji plno</span></button>
+        </div>
+
+        <div class="souhrn souhrn--prazdny" id="volba-souhrn">
+          <p class="souhrn__text" id="volba-souhrn-text" role="status">Vyberte službu z nabídky výš.</p>
+          <button class="tlacitko" type="button" id="volba-spustit" aria-disabled="true">Nejdřív vyberte službu</button>
+        </div>
+
+        <p class="volba-spech">Spěchá to? Zavolejte na <a href="tel:+420704364162">+420 704 364 162</a>,
+          termín se občas uvolní na poslední chvíli. Potřebujete termín zrušit nebo přesunout?
+          Stačí zavolat, nejlíp co nejdřív — uvolníte ho někomu dalšímu.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wp-block-group alignfull sekce sekce--tmavy" id="klub">
+    <div class="obal">
+      <h2 class="has-text-align-center">proč k nám</h2>
+      <div class="wp-block-columns duvody">
+        <div class="wp-block-column duvod">
+          <p class="duvod__znak"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8Zm13 1h2.5a2.5 2.5 0 0 1 0 5H17M5 21h11"/></svg></p>
+          <h3>nápoj v ceně</h3>
+          <p>Káva, limonáda, pivo — i nealkoholické. Občas přibude něco ostřejšího. Vybíráte, až sedíte v křesle.</p>
+        </div>
+        <div class="wp-block-column duvod">
+          <p class="duvod__znak"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.4" y="5" width="19.2" height="14" rx="2.4"/><path d="M8.0 8.5 L8.88 10.79 L11.33 10.92 L9.43 12.46 L10.06 14.83 L8.0 13.5 L5.94 14.83 L6.57 12.46 L4.67 10.92 L7.12 10.79 Z"/><path d="M14.4 10.6h4.6M14.4 13.9h3.2"/></svg></p>
+          <h3>klub gentlemanů</h3>
+          <p>Po páté návštěvě se stáváte členem automaticky a od té chvíle pro vás platí nižší ceny. Nic se nevyplňuje, počítáme to za vás.</p>
+        </div>
+        <div class="wp-block-column duvod">
+          <p class="duvod__znak"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 9.5h17v3h-17zM5 12.5h14V20H5zM12 9.5V20"/><path d="M12 9.5S10.6 4 8 4a2.2 2.2 0 0 0 0 5.5ZM12 9.5S13.4 4 16 4a2.2 2.2 0 0 1 0 5.5Z"/></svg></p>
+          <h3>dárkový poukaz</h3>
+          <p>Na kteroukoli službu, koupíte ho u nás v barbershopu. Jistota, že trefíte, i když nevíte, co koupit.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wp-block-group alignfull sekce" id="tym">
+    <div class="obal dvojice dvojice--foto">
+      <div>
+        <h2>kdo to tady vede</h2>
+        <p><strong>Lukáš</strong> barbershop otevřel v roce 2019 naproti kulturáku — odtud ten název — a od té doby má něco nastříháno. Bere ranní směnu, takže kdo se potřebuje nechat ostříhat před prací, chodí k němu.</p>
+        <p><a class="tlacitko" href="#objednat">Objednat termín</a></p>
+      </div>
+      <div>
+        <figure class="wp-block-image portret">
+          <img decoding="async" src={`${base}obrazky/lukas.webp`} alt="Lukáš, majitel a hlavní barber Kulturního Barbershopu" width="560" height="560" loading="lazy">
+        </figure>
+      </div>
+    </div>
+  </div>
+
+  <section class="sekce sekce--tmavy" id="kontakt">
+    <div class="obal kontakt">
+      <div>
+        <h2>stavte se u nás</h2>
+        <div class="udaj">
+          <div class="udaj__popis">Otevírací doba</div>
+          <p style="color:#fff;font-size:19px;font-weight:600;margin:0">pondělí až čtvrtek 7:00–20:00</p>
+          <p style="color:#fff;font-size:19px;font-weight:600;margin:0">pátek 7:00–15:30</p>
+          <p class="udaj__dodatek">O víkendu máme zavřeno.</p>
+        </div>
+        <div class="udaj">
+          <div class="udaj__popis">Na telefonu</div>
+          <a class="cil" href="tel:+420704364162">+420 704 364 162</a>
+        </div>
+        <div class="udaj">
+          <div class="udaj__popis">Na mailu</div>
+          <a class="cil" href="mailto:info@kulturnibarbershop.cz">info@kulturnibarbershop.cz</a>
+        </div>
+        <div class="udaj">
+          <div class="udaj__popis">Na adrese</div>
+          <a class="cil" href="https://maps.app.goo.gl/QmGfdKV3uwkW5nTu6" rel="noopener">
+            Zámecká 85, Kolín
+            <span class="ctecka">, odkaz vede mimo tento web</span>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="ctecka">Kde nás najdete</h2>
+        <a class="mapa" href="https://maps.app.goo.gl/QmGfdKV3uwkW5nTu6" rel="noopener">
+          <img src={`${base}obrazky/mapa.webp`}
+            alt="Mapa s vyznačenou polohou barbershopu na adrese Zámecká 85, Kolín"
+            width="640" height="420" loading="lazy" decoding="async">
+          <span class="mapa__popis">Otevřít v Mapách Google
+            <span class="ctecka">, odkaz vede mimo tento web</span>
+          </span>
+        </a>
+        <p class="mapa__zdroj">Mapový podklad
+          <a href="https://www.openstreetmap.org/copyright" rel="noopener">© přispěvatelé OpenStreetMap<span class="ctecka">, odkaz vede mimo tento web</span></a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<RezervaceModal />
+
+<script>
+(function () {
+  var sluzby = document.querySelectorAll('#volba-sluzby .sluzba__volba');
+  var holici = document.querySelectorAll('#volba-holici .volba-holic');
+  var souhrn = document.getElementById('volba-souhrn');
+  var souhrnText = document.getElementById('volba-souhrn-text');
+  var spustit = document.getElementById('volba-spustit');
+
+  var vybranaSluzba = null;
+  var vybranyHolic = 'kdokoliv bude volný';
+
+  function aktualizuj() {
+    if (!vybranaSluzba) {
+      souhrn.classList.add('souhrn--prazdny');
+      souhrnText.textContent = 'Vyberte službu z nabídky výš.';
+      spustit.textContent = 'Nejdřív vyberte službu';
+      spustit.setAttribute('aria-disabled', 'true');
+      return;
+    }
+    souhrn.classList.remove('souhrn--prazdny');
+    var holicText = vybranyHolic === 'kdokoliv bude volný' ? '' : ' · ' + vybranyHolic;
+    souhrnText.innerHTML = '<strong>' + vybranaSluzba.jm + '</strong> · ' + vybranaSluzba.cas +
+      ' · <span class="souhrn__cena">' + vybranaSluzba.cena + '</span>' +
+      (holicText ? '<br><span class="souhrn__zmena">' + holicText.replace(' · ', '') + '</span>' : '');
+    spustit.textContent = 'Vybrat termín';
+    spustit.removeAttribute('aria-disabled');
+    window.__kbVybranaSluzba = vybranaSluzba.jm;
+    window.__kbVybranyHolic = vybranyHolic;
+  }
+
+  sluzby.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      sluzby.forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+      btn.setAttribute('aria-pressed', 'true');
+      vybranaSluzba = { jm: btn.dataset.jm, cas: btn.dataset.cas, cena: btn.dataset.cena };
+      aktualizuj();
+    });
+  });
+
+  holici.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      holici.forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+      btn.setAttribute('aria-pressed', 'true');
+      vybranyHolic = btn.dataset.jm;
+      aktualizuj();
+    });
+  });
+
+  spustit.addEventListener('click', function () {
+    if (spustit.getAttribute('aria-disabled') === 'true') {
+      document.getElementById('volba-sluzby').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    window.__kbOtevriRezervaci && window.__kbOtevriRezervaci();
+  });
+})();
+</script>
+</Layout>

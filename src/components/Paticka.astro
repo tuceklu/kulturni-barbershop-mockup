@@ -1,0 +1,52 @@
+---
+const base = import.meta.env.BASE_URL;
+const { jeUvodni = true } = Astro.props;
+---
+<div class="vyzva">
+  <a class="tlacitko" href={`${base}#objednat`}>Objednat termín</a>
+  <a class="tlacitko tlacitko--obrys" href="tel:+420704364162">Zavolat</a>
+</div>
+
+<footer class="paticka">
+  <div class="obal paticka__radek">
+    <p style="margin:0">
+      {!jeUvodni && (
+        <>
+          <strong>Kulturní Barbershop</strong> &middot; Zámecká 85, Kolín
+          &middot; <a class="cil" href="tel:+420704364162">+420 704 364 162</a><br>
+        </>
+      )}
+      <a class="cil" href={`${base}zasady-zpracovani-osobnich-udaju/`}>Zásady zpracování osobních údajů</a>
+      &middot; <button type="button" class="cil odkaz-jako-text" data-souhlas-otevrit>Nastavení soukromí</button>
+    </p>
+    <p class="site" style="margin:0">
+      <a href="https://www.facebook.com/kulturnibarber" rel="noopener">
+        <span class="ctecka">Facebook, otevře se v novém okně</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/kulturnibarbershop" rel="noopener">
+        <span class="ctecka">Instagram, otevře se v novém okně</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c2.7 0 3 0 4.1.1 1.1 0 1.8.2 2.4.5.7.2 1.2.6 1.7 1.1s.9 1 1.1 1.7c.3.6.4 1.3.5 2.4C22 8.9 22 9.3 22 12s0 3.1-.1 4.2c0 1.1-.2 1.8-.5 2.4-.2.7-.6 1.2-1.1 1.7s-1 .9-1.7 1.1c-.6.3-1.3.4-2.4.5-1.1.1-1.4.1-4.2.1s-3.1 0-4.2-.1c-1.1 0-1.8-.2-2.4-.5-.7-.2-1.2-.6-1.7-1.1s-.9-1-1.1-1.7c-.3-.6-.4-1.3-.5-2.4C2 15.1 2 14.7 2 12s0-3.1.1-4.2c0-1.1.2-1.8.5-2.4.2-.7.6-1.2 1.1-1.7S4.7 2.8 5.4 2.6c.6-.3 1.3-.4 2.4-.5C8.9 2 9.3 2 12 2zm0 5a5 5 0 100 10 5 5 0 000-10zm0 8.2a3.2 3.2 0 110-6.4 3.2 3.2 0 010 6.4zM17.8 6.9a1.2 1.2 0 11-2.4 0 1.2 1.2 0 012.4 0z"/></svg>
+      </a>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var pruh = document.querySelector('.vyzva');
+  if (!pruh || !('IntersectionObserver' in window)) { return; }
+  var sleduj = [
+    document.querySelector('.hero__akce'),
+    document.getElementById('objednat')
+  ].filter(Boolean);
+  if (!sleduj.length) { return; }
+  var vidno = new WeakMap();
+  var pozorovatel = new IntersectionObserver(function (zaznamy) {
+    zaznamy.forEach(function (z) { vidno.set(z.target, z.isIntersecting); });
+    var prekazi = sleduj.some(function (e) { return vidno.get(e); });
+    pruh.classList.toggle('vyzva--pryc', prekazi);
+  }, { rootMargin: '-64px 0px -88px 0px' });
+  sleduj.forEach(function (e) { pozorovatel.observe(e); });
+})();
+</script>

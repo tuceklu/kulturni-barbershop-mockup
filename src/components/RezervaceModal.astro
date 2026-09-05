@@ -1,0 +1,179 @@
+---
+const base = import.meta.env.BASE_URL;
+---
+<div class="rez-podklad" id="rez-podklad" hidden role="dialog" aria-modal="true" aria-labelledby="rez-nadpis">
+  <div class="rez-okno">
+    <div class="rez-hlavicka">
+      <h2 id="rez-nadpis">Vybrat termín</h2>
+      <button type="button" class="rez-zavrit" id="rez-zavrit" aria-label="Zavřít">&times;</button>
+    </div>
+    <div class="rez-telo">
+      <p class="rez-ukazka">Ukázka designu — kalendář i formulář jsou pro
+        názornost, nic se neodešle. Skutečnou rezervaci obsluhuje na webu
+        systém Amelia.</p>
+
+      <div class="rez-krok rez-krok--aktivni" data-krok="datum">
+        <h3>vyberte den</h3>
+        <div class="rez-kalendar" id="rez-kalendar" role="group" aria-label="Vyberte den"></div>
+      </div>
+
+      <div class="rez-krok" data-krok="cas">
+        <h3>vyberte čas</h3>
+        <div class="rez-casy" id="rez-casy" role="group" aria-label="Vyberte čas"></div>
+        <div class="rez-navigace">
+          <button type="button" class="rez-zpet" data-zpet="datum">Zpět na výběr dne</button>
+        </div>
+      </div>
+
+      <div class="rez-krok" data-krok="udaje">
+        <h3>vaše údaje</h3>
+        <form class="kb-form" id="rez-form">
+          <div class="kb-pole">
+            <label for="rez-jmeno">Jméno a příjmení <span class="kb-nutne">*</span></label>
+            <input type="text" id="rez-jmeno" name="jmeno" required autocomplete="off">
+          </div>
+          <div class="kb-pole">
+            <label for="rez-email">E-mail <span class="kb-nutne">*</span></label>
+            <input type="email" id="rez-email" name="email" required autocomplete="off">
+          </div>
+          <div class="kb-pole">
+            <label for="rez-telefon">Telefon <span class="kb-nutne">*</span></label>
+            <input type="text" id="rez-telefon" name="telefon" required autocomplete="off">
+          </div>
+          <div class="rez-navigace">
+            <button type="button" class="rez-zpet" data-zpet="cas">Zpět na výběr času</button>
+            <button type="submit" class="tlacitko">Odeslat objednávku</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="rez-krok" data-krok="hotovo">
+        <div class="rez-hotovo">
+          <img src={`${base}obrazky/logo-152.webp`} alt="" width="44" height="51">
+          <h3>Máte rezervováno</h3>
+          <p>Potvrzení by na skutečném webu přišlo e-mailem.</p>
+          <div class="rez-shrnuti" id="rez-shrnuti"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var podklad = document.getElementById('rez-podklad');
+  if (!podklad) return;
+  var zavrit = document.getElementById('rez-zavrit');
+  var kalendar = document.getElementById('rez-kalendar');
+  var casy = document.getElementById('rez-casy');
+  var form = document.getElementById('rez-form');
+  var shrnuti = document.getElementById('rez-shrnuti');
+  var kroky = podklad.querySelectorAll('.rez-krok');
+
+  var stav = { den: null, cas: null };
+
+  function ukazKrok(jmeno) {
+    kroky.forEach(function (k) { k.classList.toggle('rez-krok--aktivni', k.dataset.krok === jmeno); });
+  }
+
+  function postavKalendar() {
+    kalendar.innerHTML = '';
+    var dnyNazvy = ['Po', 'Út', 'St', 'Čt', 'Pá', 'So', 'Ne'];
+    dnyNazvy.forEach(function (n) {
+      var el = document.createElement('div');
+      el.className = 'rez-den-nazev';
+      el.textContent = n;
+      kalendar.appendChild(el);
+    });
+
+    var dnes = new Date();
+    var rok = dnes.getFullYear(), mesic = dnes.getMonth();
+    var prvniDen = new Date(rok, mesic, 1);
+    var posunPo = (prvniDen.getDay() + 6) % 7; // pondělí = 0
+    var pocetDni = new Date(rok, mesic + 1, 0).getDate();
+
+    for (var i = 0; i < posunPo; i++) {
+      kalendar.appendChild(document.createElement('div'));
+    }
+    for (var d = 1; d <= pocetDni; d++) {
+      var datum = new Date(rok, mesic, d);
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'rez-den';
+      btn.textContent = String(d);
+      btn.setAttribute('aria-pressed', 'false');
+      var jeVikend = datum.getDay() === 0 || datum.getDay() === 6;
+      var jeMinuly = datum < new Date(rok, mesic, dnes.getDate());
+      if (jeVikend || jeMinuly) { btn.disabled = true; }
+      else {
+        btn.addEventListener('click', function (datum) {
+          return function () {
+            kalendar.querySelectorAll('.rez-den').forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+            this_setPressed(btn);
+            stav.den = datum.toLocaleDateString('cs-CZ', { weekday: 'long', day: 'numeric', month: 'long' });
+            postavCasy(datum);
+            ukazKrok('cas');
+          };
+        }(datum));
+      }
+      kalendar.appendChild(btn);
+    }
+    function this_setPressed(btn) { btn.setAttribute('aria-pressed', 'true'); }
+  }
+
+  function postavCasy(datum) {
+    casy.innerHTML = '';
+    var jePatek = datum.getDay() === 5;
+    var sloty = jePatek
+      ? ['7:00', '8:30', '10:00', '11:30', '13:00', '14:15']
+      : ['7:00', '9:00', '10:30', '12:00', '14:00', '15:30', '17:00', '18:30'];
+    sloty.forEach(function (cas) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'rez-cas';
+      btn.textContent = cas;
+      btn.setAttribute('aria-pressed', 'false');
+      btn.addEventListener('click', function () {
+        casy.querySelectorAll('.rez-cas').forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+        btn.setAttribute('aria-pressed', 'true');
+        stav.cas = cas;
+        ukazKrok('udaje');
+      });
+      casy.appendChild(btn);
+    });
+  }
+
+  document.querySelectorAll('[data-zpet]').forEach(function (b) {
+    b.addEventListener('click', function () { ukazKrok(b.dataset.zpet); });
+  });
+
+  form && form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var sluzba = window.__kbVybranaSluzba || 'vybraná služba';
+    var holic = window.__kbVybranyHolic || 'kdokoliv bude volný';
+    shrnuti.innerHTML =
+      '<p><strong>' + sluzba + '</strong></p>' +
+      '<p>' + holic + '</p>' +
+      '<p>' + stav.den + ' v ' + stav.cas + '</p>';
+    ukazKrok('hotovo');
+  });
+
+  function otevri() {
+    postavKalendar();
+    ukazKrok('datum');
+    podklad.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  function zavriOkno() {
+    podklad.hidden = true;
+    document.body.style.overflow = '';
+  }
+  zavrit.addEventListener('click', zavriOkno);
+  podklad.addEventListener('click', function (e) { if (e.target === podklad) zavriOkno(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !podklad.hidden) zavriOkno();
+  });
+
+  window.__kbOtevriRezervaci = otevri;
+})();
+</script>

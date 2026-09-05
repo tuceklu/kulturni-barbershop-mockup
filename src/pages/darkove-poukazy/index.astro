@@ -1,0 +1,147 @@
+---
+import Layout from '../../layouts/Layout.astro';
+const base = import.meta.env.BASE_URL;
+
+const sluzby = [
+  { klic: 'strih', ikona: 'ikona-strih.webp', nazev: 'Kulturní střih', cena: '540 Kč', trvani: '45 minut',
+    popis: 'Ostříhání, abyste vypadal k světu. V ceně je umytí, střih strojkem i nůžkami, úprava kontur a styling.' },
+  { klic: 'holeni', ikona: 'ikona-holeni.webp', nazev: 'Kulturní oholení', cena: '540 Kč', trvani: '45 minut',
+    popis: 'Holení břitvou s horkým ručníkem, jak se to dělalo dřív. Včetně úpravy vousů a péče o pleť.' },
+  { klic: 'komplet', ikona: 'ikona-komplet.webp', nazev: 'Komplet zkulturnění', cena: '890 Kč', trvani: '90 minut',
+    popis: 'Střih i holení břitvou v jednom sezení. Nejvíc času a nejvíc péče — a taky nejčastější dárek.' },
+];
+---
+<Layout
+  title="Dárkové poukazy - Kulturní Barbershop"
+  jeUvodni={false}
+>
+<main id="obsah">
+  <div class="obal sekce kb-stranka">
+    <h1>Dárkové poukazy</h1>
+    <p class="sekce__uvod">Dárek pro toho, kdo si sám nic nekoupí. Poukaz platí rok, přijde e-mailem a dá se vytisknout.</p>
+
+    <div class="kb-poukazy">
+      <ul class="kb-karty" id="kb-poukazy-karty" role="list">
+        {sluzby.map((s) => (
+          <li class="kb-karta" data-sluzba={s.klic}>
+            <span class="kb-karta__znak" aria-hidden="true">
+              <img src={`${base}obrazky/${s.ikona}`} alt="" width="56" height="56" decoding="async">
+            </span>
+            <h2 class="kb-karta__nazev">{s.nazev}</h2>
+            <p class="kb-karta__cena">
+              <strong>{s.cena}</strong>
+              <span class="kb-karta__trvani">{s.trvani}</span>
+            </p>
+            <p class="kb-karta__popis">{s.popis}</p>
+            <button type="button" class="kb-tlacitko" data-vybrat-poukaz={s.klic}>
+              Koupit poukaz<span class="kb-ctecka"> na {s.nazev}</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      <div class="kb-formular" id="kb-formular" hidden>
+        <p class="rez-ukazka">Ukázka designu — formulář nic neodesílá a QR platba na další
+          obrazovce je jen náhled, ne skutečný platební údaj.</p>
+        <h2>Objednávka poukazu</h2>
+        <p class="kb-formular__shrnuti" id="kb-formular-shrnuti"></p>
+        <form class="kb-form" id="kb-poukaz-form">
+          <div class="kb-pole">
+            <label for="kb-jmeno">Jméno a příjmení <span class="kb-nutne">*</span></label>
+            <input type="text" id="kb-jmeno" required autocomplete="off">
+          </div>
+          <div class="kb-pole">
+            <label for="kb-email">E-mail, kam přijde poukaz <span class="kb-nutne">*</span></label>
+            <input type="email" id="kb-email" required autocomplete="off">
+          </div>
+          <div class="kb-pole">
+            <label for="kb-vzkaz">Vzkaz pro obdarovaného <span class="kb-nepovinne">nepovinné</span></label>
+            <textarea id="kb-vzkaz"></textarea>
+          </div>
+          <div class="kb-pole kb-pole--souhlas">
+            <label><input type="checkbox" required> Souhlasím s obchodními podmínkami pro dárkové poukazy.</label>
+          </div>
+          <button type="submit" class="kb-tlacitko kb-tlacitko--velke">Objednat a zaplatit</button>
+        </form>
+      </div>
+
+      <div class="kb-platba" id="kb-platba" hidden>
+        <p class="rez-ukazka">Ukázka designu — QR kód i čísla níž jsou náhodná,
+          nejde o skutečný platební účet.</p>
+        <h2>Zaplaťte poukaz</h2>
+        <p class="kb-platba__uvod">Naskenujte QR kód bankovní aplikací, nebo použijte údaje vedle něj. Jakmile platba dorazí, poukaz vám pošleme e-mailem.</p>
+        <div class="kb-platba__mrizka">
+          <div class="kb-platba__qr">
+            <svg viewBox="0 0 100 100" role="img" aria-label="Náhled QR kódu, jen pro ukázku">
+              <rect width="100" height="100" fill="#faf7f4"/>
+              <g fill="#1a2c37">
+                <rect x="8" y="8" width="24" height="24"/><rect x="14" y="14" width="12" height="12" fill="#faf7f4"/>
+                <rect x="68" y="8" width="24" height="24"/><rect x="74" y="14" width="12" height="12" fill="#faf7f4"/>
+                <rect x="8" y="68" width="24" height="24"/><rect x="14" y="74" width="12" height="12" fill="#faf7f4"/>
+                <rect x="40" y="10" width="6" height="6"/><rect x="52" y="10" width="6" height="6"/>
+                <rect x="40" y="40" width="20" height="20"/><rect x="66" y="40" width="6" height="6"/>
+                <rect x="78" y="40" width="6" height="6"/><rect x="40" y="66" width="6" height="6"/>
+                <rect x="52" y="78" width="6" height="6"/><rect x="66" y="66" width="20" height="20"/>
+              </g>
+            </svg>
+            <p class="kb-napoveda">Ukázkový QR, k platbě neslouží.</p>
+          </div>
+          <div class="kb-platba__udaje">
+            <h3>Nebo opište ručně</h3>
+            <dl class="kb-udaje">
+              <div class="kb-udaj">
+                <dt>Číslo účtu</dt>
+                <dd class="kb-cislo">000000–0000000000/0000 <span class="kb-ctecka">(náhled, ne skutečný účet)</span></dd>
+              </div>
+              <div class="kb-udaj kb-udaj--duraz">
+                <dt>Variabilní symbol</dt>
+                <dd class="kb-cislo kb-cislo--velke" id="kb-vs">000000</dd>
+              </div>
+              <div class="kb-udaj">
+                <dt>Částka</dt>
+                <dd class="kb-cislo" id="kb-castka">0 Kč</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+(function () {
+  var udaje = {
+    strih: { nazev: 'Kulturní střih', cena: 540 },
+    holeni: { nazev: 'Kulturní oholení', cena: 540 },
+    komplet: { nazev: 'Komplet zkulturnění', cena: 890 },
+  };
+
+  var formularSekce = document.getElementById('kb-formular');
+  var platbaSekce = document.getElementById('kb-platba');
+  var shrnuti = document.getElementById('kb-formular-shrnuti');
+  var poukazForm = document.getElementById('kb-poukaz-form');
+
+  document.querySelectorAll('[data-vybrat-poukaz]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var vybrano = udaje[btn.dataset.vybratPoukaz];
+      shrnuti.innerHTML = 'Vybráno: <strong>' + vybrano.nazev + '</strong>, ' + vybrano.cena + ' Kč.';
+      formularSekce.hidden = false;
+      platbaSekce.hidden = true;
+      window.__kbPoukazVybrany = vybrano;
+      formularSekce.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  poukazForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var vybrano = window.__kbPoukazVybrany || { cena: 0 };
+    document.getElementById('kb-vs').textContent = String(100000 + Math.floor(Math.random() * 899999));
+    document.getElementById('kb-castka').textContent = vybrano.cena + ' Kč';
+    formularSekce.hidden = true;
+    platbaSekce.hidden = false;
+    platbaSekce.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+})();
+</script>
+</Layout>

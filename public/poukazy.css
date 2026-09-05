@@ -1,0 +1,220 @@
+/* Dárkové poukazy.
+   Barvy, písma i mezery se berou z proměnných šablony (:root ve
+   style.css). Plugin si nedefinuje ani jednu vlastní barvu — kdyby
+   se značka změnila, změní se tady sama. */
+
+.kb-poukazy{ margin: 0 0 8px; }
+
+/* ---- ŠÍŘKA ----------------------------------------------------------
+   Stránka poukazů má vlastní šablonu (sablony/stranka.php) s třídou
+   `.kb-stranka`, takže nadpis, úvod i karty sdílejí jeden sloupec
+   a levé okraje lícují. Text se drží čitelné šířky, karty ne. */
+.kb-stranka h1{ font-size:clamp(30px, 4vw, 42px); margin-bottom:.5em; }
+.kb-stranka > p,
+.kb-stranka .sekce__uvod{ max-width:var(--sirka-text, 54ch); }
+.kb-ctecka{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+
+/* ---- TŘI KARTY VEDLE SEBE -------------------------------------------
+   Rozhodnuto 29. 8. 2026: kdo kupuje dárek, potřebuje tři možnosti
+   naráz v jednom pohledu, aby je porovnal. Rezervační formulář na
+   úvodní stránce zůstává svislý seznam, viz POUKAZY.md C6b. */
+.kb-poukazy ul.kb-karty{
+  /* Vyšší váha než `.stranka-text ul{padding-left:1.2em}` v šabloně. */
+  list-style:none; margin:0 0 40px; padding:0;
+  display:grid; gap:20px;
+  grid-template-columns:1fr;
+}
+@media (min-width:780px){
+  /* Váha musí sedět na základní pravidlo výš (`.kb-poukazy ul.kb-karty`),
+     jinak media query prohraje souboj o specificitu a karty zůstanou
+     pod sebou. Přesně na tohle se tady jednou šláplo. */
+  .kb-poukazy ul.kb-karty{ grid-template-columns:repeat(3, 1fr); }
+}
+
+.kb-karta{
+  display:flex; flex-direction:column; align-items:flex-start; gap:10px;
+  padding:26px 24px 24px;
+  background:var(--papir, #fff);
+  border:1px solid var(--linka, #e4ddd6);
+  border-radius:10px;
+}
+.kb-karta--vybrana{
+  border-color:var(--linka-ovladaci, #ab8460);
+  box-shadow:0 0 0 1px var(--linka-ovladaci, #ab8460);
+}
+.kb-karta__znak{ display:block; line-height:0; }
+.kb-karta__znak img{ width:56px; height:56px; }
+
+.kb-karta__nazev{
+  font-weight:500;
+  font-family:var(--pismo-nadpis, sans-serif);
+  font-size:22px; line-height:1.15; margin:0; color:var(--tma, #1a2c37);
+}
+.kb-karta__cena{
+  margin:0; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+}
+.kb-karta__cena strong{
+  font-family:var(--pismo-nadpis, sans-serif);
+  font-size:26px; font-weight:500; color:var(--med-text, #9b643d);
+  font-variant-numeric:tabular-nums;
+}
+/* Ztlumená šedá měla proti bílé 4,55 : 1 při limitu 4,50 — prošlo by,
+   ale na hraně. Tmavší odstín dává 5,9 : 1. Změřeno, ne odhadnuto. */
+.kb-karta__trvani{ font-size:15px; color:#5c6675; }
+.kb-karta__popis{ margin:0; font-size:16px; line-height:1.55; }
+
+/* ---- TLAČÍTKO -------------------------------------------------------- */
+.kb-tlacitko{
+  display:inline-block; margin-top:auto; padding:12px 22px;
+  background:var(--med-text, #9b643d); color:#fff; text-decoration:none;
+  border:1px solid var(--med-text, #9b643d); border-radius:6px;
+  font-family:var(--pismo-nadpis, sans-serif); font-size:16px;
+  letter-spacing:.02em; cursor:pointer; min-height:44px;
+  transition:background-color .15s, border-color .15s;
+}
+.kb-tlacitko:hover, .kb-tlacitko:focus-visible{
+  background:var(--med-tmava, #8a5836); border-color:var(--med-tmava, #8a5836); color:#fff;
+}
+.kb-tlacitko--tise{
+  background:transparent; color:var(--med-text, #9b643d);
+  border-color:var(--linka-ovladaci, #ab8460);
+}
+.kb-tlacitko--tise:hover, .kb-tlacitko--tise:focus-visible{
+  background:var(--papir-tepl, #faf7f4); color:var(--med-tmava, #8a5836);
+}
+.kb-tlacitko--velke{ width:100%; font-size:18px; padding:15px 22px; text-align:center; }
+
+/* ---- FORMULÁŘ -------------------------------------------------------- */
+.kb-formular{
+  /* Vnitřek se drží u sebe: pole mají 34em a nadpis se od nich nemá
+     odpoutat na celou šířku sekce, jinak formulář vypadá rozházeně. */
+  max-width:min(100%, 46em);
+  background:var(--papir-tepl, #faf7f4);
+  border:1px solid var(--linka, #e4ddd6);
+  border-radius:10px; padding:28px 26px 26px; scroll-margin-top:88px;
+}
+.kb-formular h2{
+  font-family:var(--pismo-nadpis, sans-serif); font-size:26px;
+  margin:0 0 6px; color:var(--tma, #1a2c37);
+}
+.kb-formular__shrnuti{ margin:0 0 22px; max-width:34em; font-size:16px; color:#5c6675; }
+.kb-formular__shrnuti strong{
+  color:var(--med-text, #9b643d); font-variant-numeric:tabular-nums;
+}
+.kb-zmenit{ color:var(--med-text, #9b643d); }
+
+.kb-form{ display:flex; flex-direction:column; gap:18px; max-width:34em; }
+.kb-pole{ display:flex; flex-direction:column; gap:6px; }
+.kb-pole label{ font-weight:700; font-size:16px; color:var(--inkoust, #354052); }
+.kb-nutne{ color:var(--med-text, #9b643d); }
+.kb-nepovinne{ font-weight:400; color:#5c6675; font-size:14px; }
+
+.kb-pole input[type=text],
+.kb-pole input[type=email],
+.kb-pole textarea{
+  font:inherit; font-size:17px; padding:11px 13px; min-height:44px;
+  border:1px solid var(--linka-ovladaci, #ab8460); border-radius:6px;
+  background:var(--papir, #fff); color:var(--inkoust, #354052);
+  width:100%;
+}
+.kb-pole textarea{ resize:vertical; min-height:88px; }
+.kb-pole input:focus-visible, .kb-pole textarea:focus-visible{
+  outline:3px solid var(--fokus, #1a2c37); outline-offset:2px;
+}
+.kb-napoveda{ margin:0; font-size:14.5px; color:#5c6675; line-height:1.5; }
+.kb-napoveda--pata{ margin-top:4px; }
+
+.kb-pole--souhlas label{
+  display:flex; gap:11px; align-items:flex-start; font-weight:400; font-size:16px;
+}
+/* 24 px je minimum podle WCAG 2.2 pro cíl ovládacího prvku.
+   Dvacet by prošlo jen díky tomu, že je kolem něj popisek. */
+.kb-pole--souhlas input{ margin-top:2px; width:24px; height:24px; flex:none; }
+
+/* Honeypot: musí zmizet očím, ale ne prohlížeči, jinak ho robot pozná. */
+.kb-past{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+
+@media (prefers-reduced-motion:reduce){
+  .kb-tlacitko{ transition:none; }
+}
+
+/* ---- HLÁŠKA O CHYBĚ -------------------------------------------------- */
+.kb-chyba{
+  margin:0 0 24px; padding:14px 18px; max-width:34em;
+  background:#f7ece9; border:1px solid #9c3b2e; border-left-width:4px;
+  border-radius:6px; color:#7d2f24; font-weight:600;
+}
+
+/* ---- STRÁNKA S PLATBOU ---------------------------------------------- */
+.kb-hotovo{
+  margin:0 0 22px; padding:14px 18px; max-width:40em;
+  background:#eaf3ec; border:1px solid #2f6b41; border-left-width:4px;
+  border-radius:6px;
+}
+.kb-platba h2{
+  font-family:var(--pismo-nadpis, sans-serif); font-size:clamp(24px,3vw,32px);
+  margin:0 0 10px; color:var(--tma, #1a2c37);
+}
+.kb-platba__uvod{ margin:0 0 28px; max-width:40em; }
+
+/* QR vlevo, údaje k opsání vpravo. Sken je snazší cesta, proto je
+   první a větší; opis je náhradní, ne rovnocenný. */
+.kb-platba__mrizka{ display:grid; gap:28px; grid-template-columns:1fr; align-items:start; }
+@media (min-width:760px){
+  .kb-platba__mrizka{ grid-template-columns:minmax(230px, 300px) 1fr; gap:40px; }
+}
+.kb-platba__qr{
+  background:var(--papir, #fff); border:1px solid var(--linka, #e4ddd6);
+  border-radius:10px; padding:18px; text-align:center;
+}
+.kb-platba__qr svg{ width:100%; height:auto; max-width:280px; }
+.kb-platba__qr .kb-napoveda{ margin-top:10px; }
+
+.kb-platba__udaje h3{
+  font-family:var(--pismo-nadpis, sans-serif); font-size:19px;
+  margin:0 0 14px; color:var(--tma, #1a2c37);
+}
+.kb-udaje{ margin:0 0 14px; display:flex; flex-direction:column; gap:12px; }
+.kb-udaj{
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 14px;
+  padding-bottom:12px; border-bottom:1px solid var(--linka, #e4ddd6);
+}
+.kb-udaj:last-child{ border-bottom:0; }
+.kb-udaj dt{ font-size:14.5px; color:#5c6675; min-width:11em; }
+.kb-udaj dd{ margin:0; }
+.kb-cislo{
+  font-family:ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size:19px; font-variant-numeric:tabular-nums; letter-spacing:.02em;
+  color:var(--inkoust, #354052);
+}
+/* Variabilní symbol je z trojice nejdůležitější — bez něj se platba
+   nespáruje. Proto je největší, ne proto, že je hezký. */
+.kb-udaj--duraz dt{ color:var(--inkoust, #354052); font-weight:700; }
+.kb-cislo--velke{ font-size:27px; font-weight:600; color:var(--med-text, #9b643d); }
+
+/* ---- KOPÍROVÁNÍ ------------------------------------------------------ */
+.kb-kopirovat{
+  margin-left:12px; padding:6px 12px; min-height:32px;
+  font:inherit; font-size:14px;
+  background:transparent; color:var(--med-text, #9b643d);
+  border:1px solid var(--linka-ovladaci, #ab8460); border-radius:5px;
+  cursor:pointer; vertical-align:middle;
+}
+.kb-kopirovat:hover, .kb-kopirovat:focus-visible{
+  background:var(--papir, #fff); color:var(--med-tmava, #8a5836);
+}
+.kb-kopirovat--hotovo{ color:#2f6b41; border-color:#2f6b41; }
+
+/* Na úzkém displeji popisek nad hodnotou, ne vedle ní — jinak se
+   hodnoty rozjedou k pravému okraji a tabulka se rozpadne.
+   Tlačítko je tam navíc HLAVNÍ cesta: kdo je na telefonu, nemá QR
+   čím naskenovat. */
+@media (max-width:600px){
+  .kb-udaj{ flex-direction:column; align-items:flex-start; gap:4px; }
+  .kb-udaj dt{ min-width:0; }
+  .kb-udaj dd{ display:flex; align-items:center; flex-wrap:wrap; gap:8px; width:100%; }
+  .kb-kopirovat{ margin-left:0; min-height:40px; padding:8px 14px; }
+}
