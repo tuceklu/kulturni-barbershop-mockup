@@ -1,6 +1,12 @@
 ---
 const base = import.meta.env.BASE_URL;
-const { poukazyUrl = `${base}darkove-poukazy/` } = Astro.props;
+const {
+  poukazyUrl = `${base}darkove-poukazy/`,
+  // Kotvy (#sluzby, #klub…) míří na homepage. Na stránkách, které mají
+  // stejné kotvy samy o sobě (homepage, tmavá varianta), se přepíše
+  // na cestu té stránky, ať odkaz roluje na místě a neodvádí jinam.
+  zaklad = base,
+} = Astro.props;
 ---
 <header class="hlavicka">
   <div class="hlavicka__obal">
@@ -13,11 +19,12 @@ const { poukazyUrl = `${base}darkove-poukazy/` } = Astro.props;
 
     <nav aria-label="Hlavní nabídka">
       <ul class="menu" id="hlavni-menu">
-        <li><a href={`${base}#sluzby`}>Naše služby</a></li>
-        <li><a href={`${base}#klub`}>Klub gentlemanů</a></li>
-        <li><a href={`${base}#kontakt`}>Kontakt</a></li>
+        <li><a href={`${zaklad}#sluzby`}>Naše služby</a></li>
+        <li><a href={`${zaklad}#klub`}>Klub gentlemanů</a></li>
+        <li><a href={`${zaklad}#kontakt`}>Kontakt</a></li>
         <li><a href={poukazyUrl}>Poukazy</a></li>
-        <li><a class="menu__vyzva" href={`${base}#objednat`}>Objednat termín</a></li>
+        <li><a href={`${base}tmava/`}>Tmavá</a></li>
+        <li><a class="menu__vyzva" href={`${zaklad}#objednat`}>Objednat termín</a></li>
       </ul>
     </nav>
   </div>

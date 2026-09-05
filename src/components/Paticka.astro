@@ -1,10 +1,10 @@
 ---
 const base = import.meta.env.BASE_URL;
-const { jeUvodni = true, ukazatVyzvu = true } = Astro.props;
+const { jeUvodni = true, ukazatVyzvu = true, zaklad = base } = Astro.props;
 ---
 {ukazatVyzvu && (
   <div class="vyzva">
-    <a class="tlacitko" href={`${base}#objednat`}>Objednat termín</a>
+    <a class="tlacitko" href={`${zaklad}#objednat`}>Objednat termín</a>
     <a class="tlacitko tlacitko--obrys" href="tel:+420704364162">Zavolat</a>
   </div>
 )}

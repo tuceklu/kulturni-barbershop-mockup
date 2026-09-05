@@ -10,6 +10,9 @@ const {
   jeUvodni = false,
   poukazyUrl,
   ukazatVyzvu = true,
+  bodyTrida = '',
+  extraCss = '',
+  zaklad,
 } = Astro.props;
 ---
 <!doctype html>
@@ -23,18 +26,19 @@ const {
   <link rel="stylesheet" href={`${base}style.css`}>
   <link rel="stylesheet" href={`${base}poukazy.css`}>
   <link rel="stylesheet" href={`${base}mockup.css`}>
+  {extraCss && <link rel="stylesheet" href={`${base}${extraCss}`}>}
   <link rel="icon" href={`${base}favicon-32x32.png`} sizes="32x32">
   <link rel="icon" href={`${base}favicon-192x192.png`} sizes="192x192">
   <link rel="apple-touch-icon" href={`${base}apple-touch-icon.png`}>
 </head>
-<body>
+<body class={bodyTrida}>
   <p class="demo-pasek">
     <strong>Ukázka designu.</strong> Statický mockup bez databáze a bez skutečné rezervace — nic tu neodešlete.
   </p>
   <a class="ctecka" href="#obsah">Přeskočit na obsah</a>
-  <Hlavicka poukazyUrl={poukazyUrl} />
+  <Hlavicka poukazyUrl={poukazyUrl} zaklad={zaklad} />
   <slot />
-  <Paticka jeUvodni={jeUvodni} ukazatVyzvu={ukazatVyzvu} />
+  <Paticka jeUvodni={jeUvodni} ukazatVyzvu={ukazatVyzvu} zaklad={zaklad} />
   <Souhlas />
 </body>
 </html>

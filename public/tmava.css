@@ -1,0 +1,33 @@
+/* Tmavá varianta — barvy blíž k současnému ostrému webu
+   (černé a bílé pásy, měděný akcent, patka jako plná barva).
+   Platí jen na stránce /tmava/, přes proměnné ze style.css. */
+
+body.tmava{
+  --papir:       #000000;
+  --papir-tepl:  #14110f;
+  --inkoust:     #e9e2d8;
+  --tma:         #000000;
+  --linka:       #453c33;
+  --linka-ovladaci: #c79a6b;
+  --med-text:    #dca47d;
+  --med-tmava:   #c68a5c;
+}
+
+body.tmava .hlavicka{
+  background:var(--med-svetla);
+  border-bottom-color:transparent;
+}
+body.tmava .znacka,
+body.tmava .menu a,
+body.tmava .znacka__text{ color:#fff; }
+body.tmava .menu a.menu__vyzva{ background:#1a1613; }
+body.tmava .menu-prepinac{ border-color:rgba(255,255,255,.6); color:#fff; }
+
+body.tmava .sluzba__volba:hover{ background:#1c1815; }
+body.tmava .souhrn{ background:rgba(0,0,0,.92); }
+body.tmava .vyzva{ background:rgba(0,0,0,.95); }
+body.tmava .rez-den:disabled{ background:#1c1815; color:#5c554b; }
+body.tmava .tlacitko--obrys-tmavy:hover,
+body.tmava .tlacitko--obrys-tmavy:focus-visible{
+  background:var(--med-text); color:#000; border-color:var(--med-text);
+}
