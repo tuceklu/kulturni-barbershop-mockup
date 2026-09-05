@@ -33,13 +33,25 @@
 .old__hlavicka{background:#dca47d; position:sticky; top:0; z-index:10}
 .old__hlavicka .old__obal{
   display:flex; align-items:center; justify-content:flex-end; gap:28px;
-  min-height:60px; flex-wrap:wrap; padding-block:10px;
+  min-height:60px; padding-block:10px;
 }
 .old__hlavicka a{
   color:#fff; text-decoration:none; font-weight:700; font-size:14px;
-  letter-spacing:.05em; text-transform:uppercase;
+  letter-spacing:.05em; text-transform:uppercase; white-space:nowrap;
 }
 .old__hlavicka a:hover{text-decoration:underline}
+
+/* Na úzkém displeji se čtyři odkazy a tlačítko za sebou nevejdou.
+   Místo lámání do tří řádků (zabralo přes 160 px) se řádek nechá
+   rolovat vodorovně — jediný odkaz zůstane vždycky jednořádkový. */
+@media (max-width:760px){
+  .old__hlavicka .old__obal{
+    justify-content:flex-start; overflow-x:auto; flex-wrap:nowrap;
+    -webkit-overflow-scrolling:touch;
+  }
+  .old__hlavicka a{font-size:13px}
+  .old__navrat{flex:none}
+}
 .old__navrat{
   margin-left:auto; padding:8px 16px; border:2px solid #fff; border-radius:999px;
   text-transform:none !important; letter-spacing:0 !important; font-weight:700;
