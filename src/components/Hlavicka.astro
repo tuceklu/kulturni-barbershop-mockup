@@ -1,6 +1,6 @@
 ---
 // Jedno menu, stejné na každé stránce. Žádné kotvy na sekce, žádné
-// tlačítko navíc — jen přepínání mezi čtyřmi verzemi.
+// tlačítko navíc — jen přepínání mezi verzemi a odkaz na živý web.
 const base = import.meta.env.BASE_URL;
 const { poukazyUrl = `${base}darkove-poukazy/` } = Astro.props;
 
@@ -10,7 +10,6 @@ const jeAktivni = (cast) => cast === '' ? (cesta === base || cesta === base.slic
 const polozky = [
   { href: base, text: 'Světlá', aktivni: jeAktivni('') },
   { href: `${base}tmava/`, text: 'Tmavá', aktivni: jeAktivni('tmava') },
-  { href: `${base}old/`, text: 'Old', aktivni: jeAktivni('old') },
   { href: poukazyUrl, text: 'Poukazy', aktivni: jeAktivni('darkove-poukazy') },
 ];
 ---
@@ -26,6 +25,7 @@ const polozky = [
         {polozky.map((p) => (
           <li><a href={p.href} aria-current={p.aktivni ? 'page' : undefined}>{p.text}</a></li>
         ))}
+        <li><a href="https://www.kulturnibarbershop.cz" target="_blank" rel="noopener">Aktuální web</a></li>
       </ul>
     </nav>
   </div>

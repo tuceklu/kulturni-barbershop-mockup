@@ -11,20 +11,21 @@ ne odhadnuté.
 
 ## Co je uvnitř
 
-- **Úvodní stránka** — hero, ceník služeb, výběr holiče, „proč k nám",
-  tým, kontakt. Výběr služby a holiče funguje (přepíná zvýraznění
-  a lepící souhrn dole), tlačítko „Vybrat termín" otevře **maketu
-  rezervace** (kalendář → čas → kontaktní údaje → potvrzení). Skutečnou
-  rezervaci na webu obsluhuje systém Amelia — tahle maketa je jen
-  vizuální náhrada, nic neukládá ani neodesílá.
+Menu je stejné na každé stránce: **Světlá**, **Tmavá**, **Poukazy**
+a **Aktuální web** (externí odkaz na `kulturnibarbershop.cz`).
+
+- **Světlá / Tmavá** — stejný obsah (hero, ceník služeb, výběr holiče,
+  „proč k nám", tým, kontakt), jen jinak přebarvený — Tmavá je blíž
+  barvám současného ostrého webu. Výběr služby a holiče funguje
+  (přepíná zvýraznění a lepící souhrn dole), tlačítko „Vybrat termín"
+  otevře **maketu rezervace** (kalendář → čas → kontaktní údaje →
+  potvrzení). Skutečnou rezervaci na webu obsluhuje systém Amelia.
 - **Dárkové poukazy** — tři karty, tlačítko „Koupit poukaz" otevře
-  objednávkový formulář a po odeslání náhled platební stránky s QR
-  (QR i čísla jsou náhodná, k platbě neslouží).
+  objednávkový formulář a po odeslání náhled platební stránky s QR.
 - **Zásady zpracování osobních údajů** — plný text, včetně
   nedopsaných míst v hranatých závorkách (návrh čeká na právní
   kontrolu, viz `PODMINKY.md` a `ROZHODNUTI.md` v hlavním repozitáři).
-- Souhlasová lišta dole je čistě vizuální — nic neukládá, tlačítka
-  ji jen schovají.
+- Souhlasová lišta dole je čistě vizuální, tlačítka ji jen schovají.
 
 ## Jak si to spustit lokálně
 
