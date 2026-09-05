@@ -9,6 +9,7 @@ const {
   description = 'Ukázka designu webu Kulturní Barbershop — statický mockup, žádná data ani rezervace nejsou skutečné.',
   jeUvodni = false,
   poukazyUrl,
+  ukazatVyzvu = true,
 } = Astro.props;
 ---
 <!doctype html>
@@ -33,7 +34,7 @@ const {
   <a class="ctecka" href="#obsah">Přeskočit na obsah</a>
   <Hlavicka poukazyUrl={poukazyUrl} />
   <slot />
-  <Paticka jeUvodni={jeUvodni} />
+  <Paticka jeUvodni={jeUvodni} ukazatVyzvu={ukazatVyzvu} />
   <Souhlas />
 </body>
 </html>
