@@ -2,11 +2,27 @@
    Rezervaci na ostrém webu obsluhuje Amelia, tady je to jen klikací
    maketa se stejnými barvami a písmy jako zbytek webu. */
 
-.demo-pasek{
-  background:var(--tma); color:#f2ece6; text-align:center;
-  font-size:14px; padding:8px var(--okraj); position:relative; z-index:80;
+/* ---- JEDNOTNÉ MENU (Světlá / Tmavá / Old / Poukazy) ------------------
+   Nahrazuje kotvy na sekce a mobilní rozbalovací nabídku z původní
+   šablony — se čtyřmi krátkými položkami se vejde na řádek pořád,
+   hamburger by tu jen přidával krok navíc. Přepisuje mobilní pravidla
+   z style.css (tam se @ 860px schová za tlačítko, které tahle šablona
+   nevykresluje). */
+.hlavicka .menu{
+  display:flex !important; flex-direction:row !important; position:static !important;
+  inset:auto !important; background:none !important; border-bottom:0 !important;
+  padding:0 !important; gap:clamp(14px,2.2vw,30px) !important;
 }
-.demo-pasek strong{color:var(--med-svetla)}
+.hlavicka .menu a{border-bottom:2px solid transparent !important; width:auto !important}
+.hlavicka .menu a[aria-current="page"]{
+  color:var(--med-text); border-bottom-color:var(--med-text) !important;
+}
+@media (max-width:520px){
+  .hlavicka__obal{gap:10px}
+  .znacka__text{display:none}
+  .hlavicka .menu{gap:14px !important}
+  .hlavicka .menu a{font-size:13.5px; padding:14px 0 !important}
+}
 
 /* ---- MODÁLNÍ OKNO REZERVACE ------------------------------------------ */
 .rez-podklad{
@@ -31,10 +47,6 @@
 }
 .rez-zavrit:hover{background:var(--papir-tepl)}
 .rez-telo{padding:20px 22px 24px}
-.rez-ukazka{
-  margin:0 0 18px; padding:10px 14px; font-size:13.5px; color:#5c6675;
-  background:var(--papir-tepl); border:1px solid var(--linka); border-radius:6px;
-}
 .rez-krok{display:none}
 .rez-krok--aktivni{display:block}
 .rez-krok h3{margin:0 0 12px; font-size:18px; text-transform:lowercase}

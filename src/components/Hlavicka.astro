@@ -1,16 +1,18 @@
 ---
+// Jedno menu, stejné na každé stránce. Žádné kotvy na sekce, žádné
+// tlačítko navíc — jen přepínání mezi čtyřmi verzemi.
 const base = import.meta.env.BASE_URL;
-const {
-  poukazyUrl = `${base}darkove-poukazy/`,
-  // Kotvy (#sluzby, #klub…) míří na homepage. Na stránkách, které mají
-  // stejné kotvy samy o sobě (homepage, tmavá varianta), se přepíše
-  // na cestu té stránky, ať odkaz roluje na místě a neodvádí jinam.
-  zaklad = base,
-} = Astro.props;
+const { poukazyUrl = `${base}darkove-poukazy/` } = Astro.props;
 
-const jeTmava = Astro.url.pathname.includes('/tmava');
-const prepinacHref = jeTmava ? base : `${base}tmava/`;
-const prepinacText = jeTmava ? 'Světlá' : 'Tmavá';
+const cesta = Astro.url.pathname;
+const jeAktivni = (cast) => cast === '' ? (cesta === base || cesta === base.slice(0, -1)) : cesta.includes(`/${cast}/`);
+
+const polozky = [
+  { href: base, text: 'Světlá', aktivni: jeAktivni('') },
+  { href: `${base}tmava/`, text: 'Tmavá', aktivni: jeAktivni('tmava') },
+  { href: `${base}old/`, text: 'Old', aktivni: jeAktivni('old') },
+  { href: poukazyUrl, text: 'Poukazy', aktivni: jeAktivni('darkove-poukazy') },
+];
 ---
 <header class="hlavicka">
   <div class="hlavicka__obal">
@@ -19,41 +21,12 @@ const prepinacText = jeTmava ? 'Světlá' : 'Tmavá';
       <span class="znacka__text">Kulturní Barbershop</span>
     </a>
 
-    <button class="menu-prepinac" aria-expanded="false" aria-controls="hlavni-menu">Menu</button>
-
     <nav aria-label="Hlavní nabídka">
-      <ul class="menu" id="hlavni-menu">
-        <li><a href={`${zaklad}#sluzby`}>Naše služby</a></li>
-        <li><a href={`${zaklad}#klub`}>Klub gentlemanů</a></li>
-        <li><a href={`${zaklad}#kontakt`}>Kontakt</a></li>
-        <li><a href={poukazyUrl}>Poukazy</a></li>
-        <li><a href={prepinacHref}>{prepinacText}</a></li>
-        <li><a href={`${base}old/`}>Old</a></li>
-        <li><a class="menu__vyzva" href={`${zaklad}#objednat`}>Objednat termín</a></li>
+      <ul class="menu">
+        {polozky.map((p) => (
+          <li><a href={p.href} aria-current={p.aktivni ? 'page' : undefined}>{p.text}</a></li>
+        ))}
       </ul>
     </nav>
   </div>
 </header>
-
-<script>
-(function () {
-  var tl = document.querySelector('.menu-prepinac');
-  var mn = document.getElementById('hlavni-menu');
-  if (!tl || !mn) return;
-  function uzavri(stav) {
-    tl.setAttribute('aria-expanded', stav ? 'true' : 'false');
-    if (window.matchMedia('(max-width:860px)').matches) { mn.hidden = !stav; }
-    else { mn.hidden = false; }
-  }
-  uzavri(false);
-  tl.addEventListener('click', function () {
-    uzavri(tl.getAttribute('aria-expanded') !== 'true');
-    if (tl.getAttribute('aria-expanded') === 'true') { mn.querySelector('a').focus(); }
-  });
-  mn.addEventListener('click', function (e) { if (e.target.tagName === 'A') uzavri(false); });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && tl.getAttribute('aria-expanded') === 'true') { uzavri(false); tl.focus(); }
-  });
-  window.addEventListener('resize', function () { uzavri(false); });
-})();
-</script>
